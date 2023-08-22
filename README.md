@@ -1,5 +1,5 @@
 # cryptography-project
 
-Linguagem de programação: Python
-Banco de Dados: MySQL
-Biblioteca para GUI: TKinter
+- Linguagem de programação: Python
+- Banco de Dados: MySQL
+- Biblioteca para GUI: TKinter
