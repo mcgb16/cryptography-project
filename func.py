@@ -3,6 +3,9 @@ import string
 import secrets
 import func_db
 
+def verify_cpf(user_cpf):
+    pass
+
 def generate_crypt_data(text_to_crypt):
     crypted_list = []
     crypted_data = ''
