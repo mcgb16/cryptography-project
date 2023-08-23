@@ -4,7 +4,54 @@ import secrets
 import func_db
 
 def verify_cpf(user_cpf):
-    pass
+    cpf_not_valid = 'CPF não é válido. Cheque a digitação e lembre-se: apenas números.'
+    cpf_digit_list = []    
+    v1 = 10
+    v2 = 11
+    i = 0
+    j = 0
+    cpf_digit1_validate = 0
+    cpf_digit2_validate = 0
+
+    if len(user_cpf) != 11:
+        return cpf_not_valid
+
+    try:
+        int(user_cpf)
+    except:
+        return cpf_not_valid
+    
+    for d in user_cpf:
+        cpf_digit_list.append(int(d))
+
+    while i < 9:
+        cpf_digit1_validate += cpf_digit_list[i]*v1
+        v1 -= 1
+        i += 1
+
+    cpf_digit1_validate = (cpf_digit1_validate*10)%11
+
+    if cpf_digit1_validate == 10:
+        cpf_digit1_validate = 0
+    
+    if cpf_digit1_validate == cpf_digit_list[9]:
+        while j < 10:
+            cpf_digit2_validate += cpf_digit_list[j]*v2
+            v2 -= 1
+            j += 1
+
+        cpf_digit2_validate = (cpf_digit2_validate*10)%11
+
+        if cpf_digit2_validate == 10:
+            cpf_digit2_validate = 0
+        
+        if cpf_digit2_validate == cpf_digit_list[10]:
+            return 'cpf valid'
+        else:
+            return cpf_not_valid
+    else:
+        return cpf_not_valid
+
 
 def generate_crypt_data(text_to_crypt):
     crypted_list = []
