@@ -52,7 +52,6 @@ def verify_cpf(user_cpf):
     else:
         return cpf_not_valid
 
-
 def generate_crypt_data(text_to_crypt):
     crypted_list = []
     crypted_data = ''
