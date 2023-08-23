@@ -7,8 +7,8 @@ def generate_crypt_data(text_to_crypt):
     crypted_list = []
     crypted_data = ''
     
-    for digit in text_to_crypt:
-        crypt_mask_len = 56
+    for d in text_to_crypt:
+        crypt_mask_len = random.randint(128,256)
         crypted_list.append(''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k = crypt_mask_len)))
     
     for i in crypted_list:
