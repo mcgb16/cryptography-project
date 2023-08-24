@@ -66,7 +66,12 @@ def generate_crypt_data(text_to_crypt):
     return crypted_data
 
 def generate_unique_key():
-    pass
+    unique_key_lenght = 128
+    key = ''
+    i = 0
+    for i in range(128):
+        key += ''.join(secrets.choice(string.ascii_letters + string.digits))
+    return key
 
 def generate_key_file():
     pass
