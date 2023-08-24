@@ -66,10 +66,19 @@ def generate_crypt_data(text_to_crypt):
     return crypted_data
 
 def generate_unique_key():
-    pass
+    unique_key_lenght = 128
+    key = ''
+    for i in range(unique_key_lenght):
+        key += ''.join(secrets.choice(string.ascii_letters + string.digits))
+    return key
 
 def generate_key_file():
     pass
 
 def generate_crypt_file():
     pass
+
+def send_text_to_db(key, name, text, cpf):
+    send_to_db = func_db.save_text_on_db(key,name,text,cpf)
+    
+    return send_to_db
