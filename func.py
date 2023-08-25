@@ -52,6 +52,18 @@ def verify_cpf(user_cpf):
     else:
         return cpf_not_valid
 
+def verify_null_input(cpf, name, text_to_encrypt):
+    null_message = 'Por favor preencha todos os campos!'
+
+    if cpf == '':
+        return null_message
+    elif name == '':
+        return null_message
+    elif text_to_encrypt == '':
+        return null_message
+    else:
+        return 'valid'
+
 def generate_crypt_data(text_to_crypt):
     crypted_list = []
     crypted_data = ''
