@@ -5,6 +5,27 @@ import func_db
 
 def verify_cpf(user_cpf):
     cpf_not_valid = 'CPF não é válido. Cheque a digitação e lembre-se: apenas números.'
+    if user_cpf == '11111111111':
+        return cpf_not_valid
+    elif user_cpf == '22222222222':
+        return cpf_not_valid
+    if user_cpf == '33333333333':
+        return cpf_not_valid
+    elif user_cpf == '44444444444':
+        return cpf_not_valid
+    if user_cpf == '55555555555':
+        return cpf_not_valid
+    elif user_cpf == '66666666666':
+        return cpf_not_valid
+    if user_cpf == '77777777777':
+        return cpf_not_valid
+    elif user_cpf == '88888888888':
+        return cpf_not_valid
+    if user_cpf == '99999999999':
+        return cpf_not_valid
+    elif user_cpf == '00000000000':
+        return cpf_not_valid
+
     cpf_digit_list = []    
     v1 = 10
     v2 = 11
@@ -54,7 +75,7 @@ def verify_cpf(user_cpf):
 
 def verify_len_input(cpf, name, text_to_encrypt):
     null_message = 'Por favor preencha todos os campos!'
-    len_message_text_to_encrypt = 'O limite máximo para criptografia de textos é de 255 caractéres.'
+    len_message_text_to_encrypt = 'O limite máximo para criptografia de textos é de 255 caracteres.'
 
     if cpf == '':
         return null_message
