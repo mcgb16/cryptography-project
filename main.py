@@ -25,18 +25,23 @@ class MainPage(Page):
 
             self.name_label = tkinter.Label(self.root, text='Insira seu nome')
             self.name_label.pack()
-            self.insert_name = tkinter.Entry(self.root, validate="key", validatecommand=(validate_input_len_cmd, "%P", "name"))
+            self.insert_name = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "name"))
             self.insert_name.pack()
             
             self.cpf_label = tkinter.Label(self.root, text='Insira seu CPF (apenas números)')
             self.cpf_label.pack() 
-            self.insert_cpf = tkinter.Entry(self.root, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
+            self.insert_cpf = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
             self.insert_cpf.pack()
             
-            self.text_to_encrypt_label = tkinter.Label(self.root, text='Insira o texto para criptografar')
-            self.text_to_encrypt_label.pack() 
-            self.insert_text_to_encrypt = tkinter.Entry(self.root, validate="key", validatecommand=(validate_input_len_cmd, "%P", "text_to_encrypt"))
+            self.label_var_per_digit = tkinter.StringVar()
+            self.label_var_per_digit.set(255)
+            self.text_to_encrypt_label = tkinter.Label(self.root, text='Insira o texto para criptografar. Quantidade de caracteres digitados: ')
+            self.text_to_encrypt_label.pack()
+            self.text_to_encrypt_label_var = tkinter.Label(self.root, textvariable=self.label_var_per_digit)
+            self.text_to_encrypt_label_var.pack()
+            self.insert_text_to_encrypt=tkinter.Text(self.root,wrap='word',height=4)
             self.insert_text_to_encrypt.pack()
+            self.insert_text_to_encrypt.bind("<KeyRelease>",self.update_label_when_digit)
 
             save_button = tkinter.Button(self.root, text="Criptografar", command=lambda: self.check_data())
             save_button.pack()
@@ -49,14 +54,14 @@ class MainPage(Page):
     def check_data(self):
         data_name = self.insert_name.get()
         data_cpf = self.insert_cpf.get()
-        data_text_to_encrypt = self.insert_text_to_encrypt.get()
+        data_text_to_encrypt = self.insert_text_to_encrypt.get('1.0')
         
         validation_label = tkinter.Label(self.root, text='')
         validation_label.pack()
         
-        null_validation = func.verify_null_input(data_cpf, data_name, data_text_to_encrypt)
+        len_validation = func.verify_len_input(data_cpf, data_name, data_text_to_encrypt)
 
-        if null_validation == 'valid':
+        if len_validation == 'valid':
             cpf_validation = func.verify_cpf(data_cpf)
             
             if cpf_validation == 'cpf valid':
@@ -96,7 +101,7 @@ class MainPage(Page):
             else:
                 validation_label.config(text=cpf_validation)
         else:
-            validation_label.config(text=null_validation)
+            validation_label.config(text=len_validation)
         
     def validate_input_len(self, P, input_type):
         if input_type == 'name':
@@ -107,10 +112,10 @@ class MainPage(Page):
             if len(P) <= 11:
                 return True
             return False
-        elif input_type == 'text_to_encrypt':
-            if len(P) <= 255:
-                return True
-            return False
+
+    def update_label_when_digit(self, event):
+        current_text = self.insert_text_to_encrypt.get("1.0", "end-1c")
+        self.label_var_per_digit.set(255 - len(current_text))
 
 if __name__ == "__main__":
     main_page = MainPage('Cryptography App')
