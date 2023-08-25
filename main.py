@@ -101,6 +101,11 @@ class MainPage(Page):
                 unique_key_show.config(state='disabled')
                 unique_key_show.pack(fill="both", expand=True)
                 unique_key_scroll.config(command=unique_key_show.yview)
+
+                save_on_db = func.send_text_to_db(unique_key, data_name, data_text_to_encrypt, data_cpf)
+                save_on_db_label = tkinter.Label(self.root, text=save_on_db)
+                save_on_db_label.pack()
+
             else:
                 validation_label.config(text=cpf_validation)
         else:
