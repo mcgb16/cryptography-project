@@ -50,25 +50,39 @@ class MainPage(Page):
         data_text_to_encrypt = self.insert_text_to_encrypt.get()
 
         cpf_validation = func.verify_cpf(data_cpf)
-
+        
         if cpf_validation == 'cpf valid':
             encrypted_text = func.generate_crypt_data(data_text_to_encrypt)
 
             encrypt_text_label = tkinter.Label(self.root, text='Texto criptografado:')
             encrypt_text_label.pack()
             
-            encrypt_text_show = tkinter.Label(self.root, text='')
-            encrypt_text_show.pack()
-            encrypt_text_show.config(text=encrypted_text)
+            encrypt_frame = tkinter.Frame(self.root)
+            encrypt_frame.pack(fill="both", expand=True)
+
+            encrypt_text_scroll = tkinter.Scrollbar(encrypt_frame)
+            encrypt_text_scroll.pack(side="right", fill="y")
+
+            encrypt_text_show = tkinter.Text(encrypt_frame, wrap="word", height=5, yscrollcommand=encrypt_text_scroll.set)
+            encrypt_text_show.insert("1.0", encrypted_text)
+            encrypt_text_show.pack(fill="both", expand=True)
+            encrypt_text_scroll.config(command=encrypt_text_show.yview)
 
             unique_key = func.generate_unique_key()
 
             unique_key_label = tkinter.Label(self.root, text='Key para descriptografar:')
             unique_key_label.pack()
 
-            unique_key_show = tkinter.Label(self.root, text='')
-            unique_key_show.pack()
-            unique_key_show.config(text=unique_key)
+            unique_key_frame = tkinter.Frame(self.root)
+            unique_key_frame.pack(fill="both", expand=True)
+
+            unique_key_scroll = tkinter.Scrollbar(unique_key_frame)
+            unique_key_scroll.pack(side="right", fill="y")
+
+            unique_key_show = tkinter.Text(unique_key_frame, wrap="word", height=2, yscrollcommand=unique_key_scroll.set)
+            unique_key_show.insert("1.0", unique_key)
+            unique_key_show.pack(fill="both", expand=True)
+            unique_key_scroll.config(command=unique_key_show.yview)
         else:
             cpf_not_valid_label = tkinter.Label(self.root, text=cpf_validation)
             cpf_not_valid_label.pack()
