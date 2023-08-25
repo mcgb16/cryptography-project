@@ -52,8 +52,9 @@ def verify_cpf(user_cpf):
     else:
         return cpf_not_valid
 
-def verify_null_input(cpf, name, text_to_encrypt):
+def verify_len_input(cpf, name, text_to_encrypt):
     null_message = 'Por favor preencha todos os campos!'
+    len_message_text_to_encrypt = 'O limite máximo para criptografia de textos é de 255 caractéres.'
 
     if cpf == '':
         return null_message
@@ -61,6 +62,8 @@ def verify_null_input(cpf, name, text_to_encrypt):
         return null_message
     elif text_to_encrypt == '':
         return null_message
+    elif len(text_to_encrypt) > 255:
+        return len_message_text_to_encrypt
     else:
         return 'valid'
 

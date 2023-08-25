@@ -54,7 +54,10 @@ class MainPage(Page):
     def check_data(self):
         data_name = self.insert_name.get()
         data_cpf = self.insert_cpf.get()
-        data_text_to_encrypt = self.insert_text_to_encrypt.get('1.0')
+        try:
+            data_text_to_encrypt = self.current_text
+        except:
+            data_text_to_encrypt = ''
         
         validation_label = tkinter.Label(self.root, text='')
         validation_label.pack()
@@ -114,8 +117,8 @@ class MainPage(Page):
             return False
 
     def update_label_when_digit(self, event):
-        current_text = self.insert_text_to_encrypt.get("1.0", "end-1c")
-        self.label_var_per_digit.set(255 - len(current_text))
+        self.current_text = self.insert_text_to_encrypt.get("1.0", "end-1c")
+        self.label_var_per_digit.set(255 - len(self.current_text))
 
 if __name__ == "__main__":
     main_page = MainPage('Cryptography App')
