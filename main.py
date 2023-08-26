@@ -10,13 +10,13 @@ class Page:
         self.geometry = f'800x600+{x}+{y}'
         self.root.title(self.title)
         self.root.geometry(self.geometry)
-        self.choose_next_step()
+        self.show_pages()
 
-    def choose_next_step(self):
+    def show_pages(self):
         pass
 
 class MainPage(Page):
-    def choose_next_step(self):
+    def show_pages(self):
         if self.title == 'Cryptography App':
             encrypt_text_button = tkinter.Button(self.root, text="Criptografar Textos", command=lambda: self.open_next_page('Criptografar Textos'))
             encrypt_text_button.pack()
