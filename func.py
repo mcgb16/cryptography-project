@@ -2,6 +2,7 @@ import random
 import string
 import secrets
 import func_db
+from fpdf import FPDF
 
 def verify_cpf(user_cpf):
     cpf_not_valid = 'CPF não é válido. Cheque a digitação e lembre-se: apenas números.'
@@ -108,10 +109,29 @@ def generate_unique_key():
         key += ''.join(secrets.choice(string.ascii_letters + string.digits))
     return key
 
-def generate_key_file():
-    pass
+def generate_key_file(key):
+    key_file = FPDF()
+    key_file.add_page()
+    cell_x = 190
+    page_h = key_file.h
 
-def generate_crypt_file():
+    header_text = 'Key para descriptografia'
+    footer_text = 'Não a perca de forma alguma. Caso contrário, não será possível efetuar a descriptografia do texto que você criptografou no aplicativo.'
+
+    key_file.set_font("courier", size=14,style="I")
+    key_file.multi_cell(cell_x,txt=header_text, align="C")
+
+    key_file.set_y(page_h/2)
+    key_file.set_font("courier", size=11)
+    key_file.multi_cell(cell_x,txt=key, align="L")
+
+    key_file.set_y(page_h - key_file.t_margin - key_file.b_margin)
+    key_file.set_font("courier", size=12,style="I")
+    key_file.multi_cell(cell_x,txt=footer_text, align="C")
+
+    key_file.output("Key.pdf")
+
+def generate_crypt_file(encrypted_text):
     pass
 
 def send_text_to_db(key, name, text, cpf):
