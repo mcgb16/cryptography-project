@@ -109,30 +109,41 @@ def generate_unique_key():
         key += ''.join(secrets.choice(string.ascii_letters + string.digits))
     return key
 
-def generate_key_file(key):
-    key_file = FPDF()
-    key_file.add_page()
+def generate_pdf_files(main_txt, pdf_type):
+    pdf_file = FPDF()
+    pdf_file.add_page()
     cell_x = 190
-    page_h = key_file.h
+    page_h = pdf_file.h
 
-    header_text = 'Key para descriptografia'
-    footer_text = 'Não a perca de forma alguma. Caso contrário, não será possível efetuar a descriptografia do texto que você criptografou no aplicativo.'
+    if pdf_type == 'key':
+        header_text = 'Obrigado por criptografar conosco! Segue abaixo sua Key única para descriptografia futura.'
+        footer_text = 'Não a perca de forma alguma. Caso contrário, não será possível efetuar a descriptografia do texto que você criptografou no aplicativo.'
+        file_name = 'Key'
+        pdf_file.set_font("courier", size=12,style="I")
+        pdf_file.multi_cell(cell_x,txt=header_text, align="C")
+        pdf_file.set_y(page_h/2)
+        pdf_file.set_font("courier", size=11)
+        pdf_file.multi_cell(cell_x,txt=main_txt, align="L")
+    
+    elif pdf_type == 'encrypted_text':
+        footer_text = 'Para descriptografa-lo, utilize a key fornecida, junto do CPF cadastrado, no aplicativo.'
+        file_name = 'Encrypted_text'
+        pdf_file.set_font("courier", size=11)
+        pdf_file.multi_cell(cell_x,txt=main_txt, align="L")
 
-    key_file.set_font("courier", size=14,style="I")
-    key_file.multi_cell(cell_x,txt=header_text, align="C")
+    pdf_file.set_y(page_h - pdf_file.t_margin - pdf_file.b_margin)
+    pdf_file.set_font("courier", size=12,style="I")
+    pdf_file.multi_cell(cell_x,txt=footer_text, align="C")
 
-    key_file.set_y(page_h/2)
-    key_file.set_font("courier", size=11)
-    key_file.multi_cell(cell_x,txt=key, align="L")
+    pdf_file.output(f"{file_name}.pdf")
 
-    key_file.set_y(page_h - key_file.t_margin - key_file.b_margin)
-    key_file.set_font("courier", size=12,style="I")
-    key_file.multi_cell(cell_x,txt=footer_text, align="C")
+    return 'Sucesso!'
 
-    key_file.output("Key.pdf")
-
-def generate_crypt_file(encrypted_text):
-    pass
+def pdf_files_controller(encrypted_text, key):
+    generate_pdf_files(encrypted_text, 'encrypted_text')
+    generate_pdf_files(key, 'key')
+    
+    return 'Todos os pdfs criados com sucesso.' 
 
 def send_text_to_db(key, name, text, cpf):
     send_to_db = func_db.save_text_on_db(key,name,text,cpf)
