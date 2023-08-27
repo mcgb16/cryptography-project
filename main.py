@@ -92,7 +92,7 @@ class MainPage(Page):
                     save_on_db = func.send_text_to_db(unique_key, data_name, data_text_to_encrypt, data_cpf)
                     self.validation_label.config(text=save_on_db)
 
-                    self.pdf_button.config(state='active', command=lambda: self.generate_pdf_file(encrypted_text, unique_key))
+                    self.pdf_button.config(state='active', command=lambda: self.generate_pdf_file(encrypted_text, unique_key, data_name))
 
                 else:
                     self.validation_label.config(text=cpf_validation)
@@ -124,7 +124,7 @@ class MainPage(Page):
                     save_on_db = func.send_text_to_db(unique_key, data_name, data_text_to_encrypt, data_cpf)
                     self.validation_label.config(text=save_on_db)
 
-                    self.pdf_button.config(state='active', command=lambda: self.generate_pdf_file(encrypted_text, unique_key))
+                    self.pdf_button.config(state='active', command=lambda: self.generate_pdf_file(encrypted_text, unique_key, data_name))
 
                 else:
                     self.validation_label.config(text=cpf_validation)
@@ -174,8 +174,8 @@ class MainPage(Page):
         self.unique_key_show = tkinter.Text(self.unique_key_frame, wrap="word", height=2, yscrollcommand=self.unique_key_scroll.set)
         self.unique_key_show.pack(fill="both", expand=True)
 
-    def generate_pdf_file(self, encrypted_text,key):
-        pdf_files = func.pdf_files_controller(encrypted_text, key)
+    def generate_pdf_file(self, encrypted_text,key, user_name):
+        pdf_files = func.pdf_files_controller(encrypted_text, key, user_name)
         self.validation_label.config(text=pdf_files)
 
 if __name__ == "__main__":

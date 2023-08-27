@@ -3,6 +3,7 @@ import string
 import secrets
 import func_db
 from fpdf import FPDF
+from tkinter import filedialog
 
 def verify_cpf(user_cpf):
     cpf_not_valid = 'CPF não é válido. Cheque a digitação e lembre-se: apenas números.'
@@ -109,15 +110,15 @@ def generate_unique_key():
         key += ''.join(secrets.choice(string.ascii_letters + string.digits))
     return key
 
-def generate_pdf_files(main_txt, pdf_type):
+def generate_pdf_files(main_txt, pdf_type, user_name):
     pdf_file = FPDF()
     pdf_file.add_page()
     cell_x = 190
     page_h = pdf_file.h
 
     if pdf_type == 'key':
-        header_text = 'Obrigado por criptografar conosco! Segue abaixo sua Key única para descriptografia futura.'
-        footer_text = 'Não a perca de forma alguma. Caso contrário, não será possível efetuar a descriptografia do texto que você criptografou no aplicativo.'
+        header_text = f'{user_name}, muito obrigado por criptografar conosco! Segue abaixo sua Key única para descriptografia futura.'
+        footer_text = 'Lembre-se: não a perca de forma alguma! Caso contrário, não será possível efetuar a descriptografia do texto gerado.'
         file_name = 'Key'
         pdf_file.set_font("courier", size=12,style="I")
         pdf_file.multi_cell(cell_x,txt=header_text, align="C")
@@ -126,7 +127,7 @@ def generate_pdf_files(main_txt, pdf_type):
         pdf_file.multi_cell(cell_x,txt=main_txt, align="L")
     
     elif pdf_type == 'encrypted_text':
-        footer_text = 'Para descriptografa-lo, utilize a key fornecida, junto do CPF cadastrado, no aplicativo.'
+        footer_text = f'{user_name}, para efetuar a descriptografia, utilize a key fornecida, junto do CPF cadastrado, no aplicativo.'
         file_name = 'Encrypted_text'
         pdf_file.set_font("courier", size=11)
         pdf_file.multi_cell(cell_x,txt=main_txt, align="L")
@@ -135,13 +136,13 @@ def generate_pdf_files(main_txt, pdf_type):
     pdf_file.set_font("courier", size=12,style="I")
     pdf_file.multi_cell(cell_x,txt=footer_text, align="C")
 
-    pdf_file.output(f"{file_name}.pdf")
+    pdf_file.output(filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("All Files", "*.*")],initialfile=file_name))
 
     return 'Sucesso!'
 
-def pdf_files_controller(encrypted_text, key):
-    generate_pdf_files(encrypted_text, 'encrypted_text')
-    generate_pdf_files(key, 'key')
+def pdf_files_controller(encrypted_text, key, user_name):
+    generate_pdf_files(encrypted_text, 'encrypted_text', user_name)
+    generate_pdf_files(key, 'key', user_name)
     
     return 'Todos os pdfs criados com sucesso.' 
 
