@@ -44,8 +44,14 @@ class MainPage(Page):
             self.insert_text_to_encrypt.pack()
             self.insert_text_to_encrypt.bind("<KeyRelease>",self.update_label_when_digit)
 
-            save_button = tkinter.Button(self.root, text="Criptografar", command=lambda: self.check_data())
-            save_button.pack()
+            buttons_frame = tkinter.Frame(self.root)
+            buttons_frame.pack()
+
+            save_button = tkinter.Button(buttons_frame, text="Criptografar", command=lambda: self.check_data())
+            save_button.pack(side="left")
+            self.pdf_button = tkinter.Button(buttons_frame, text="Gerar Arquivos PDF")
+            self.pdf_button.pack(side="left")
+            self.pdf_button.config(state='disabled')
 
     def open_next_page(self,title):
         self.root.destroy()
@@ -86,10 +92,14 @@ class MainPage(Page):
                     save_on_db = func.send_text_to_db(unique_key, data_name, data_text_to_encrypt, data_cpf)
                     self.validation_label.config(text=save_on_db)
 
+                    self.pdf_button.config(state='active', command=lambda: self.generate_pdf_file(encrypted_text, unique_key))
+
                 else:
                     self.validation_label.config(text=cpf_validation)
+                    self.pdf_button.config(state='disabled')
             else:
                 self.validation_label.config(text=len_validation)
+                self.pdf_button.config(state='disabled')
         else:
             len_validation = func.verify_len_input(data_cpf, data_name, data_text_to_encrypt)
 
@@ -113,10 +123,15 @@ class MainPage(Page):
 
                     save_on_db = func.send_text_to_db(unique_key, data_name, data_text_to_encrypt, data_cpf)
                     self.validation_label.config(text=save_on_db)
+
+                    self.pdf_button.config(state='active', command=lambda: self.generate_pdf_file(encrypted_text, unique_key))
+
                 else:
                     self.validation_label.config(text=cpf_validation)
+                    self.pdf_button.config(state='disabled')
             else:
                 self.validation_label.config(text=len_validation)
+                self.pdf_button.config(state='disabled')
         
     def validate_input_len(self, P, input_type):
         if input_type == 'name':
@@ -158,6 +173,10 @@ class MainPage(Page):
 
         self.unique_key_show = tkinter.Text(self.unique_key_frame, wrap="word", height=2, yscrollcommand=self.unique_key_scroll.set)
         self.unique_key_show.pack(fill="both", expand=True)
+
+    def generate_pdf_file(self, encrypted_text,key):
+        pdf_files = func.pdf_files_controller(encrypted_text, key)
+        self.validation_label.config(text=pdf_files)
 
 if __name__ == "__main__":
     main_page = MainPage('Cryptography App')
