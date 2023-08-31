@@ -90,7 +90,7 @@ def verify_len_input(cpf, name, text_to_encrypt):
     else:
         return 'valid'
 
-def generate_crypt_data(text_to_crypt):
+def generate_encrypted_data(text_to_crypt):
     crypted_list = []
     crypted_data = ''
     
@@ -150,3 +150,19 @@ def send_text_to_db(key, name, text, cpf):
     send_to_db = func_db.save_text_on_db(key,name,text,cpf)
     
     return send_to_db
+
+def read_file_data():
+    file_name = filedialog.askopenfilename(initialdir='/', filetypes=[("All Files", "*.*")])
+    
+    file_data = ''
+
+    with open(file_name, 'r') as file:
+        file_data += file.read()
+
+    return file_data, file_name
+
+def generate_encrypted_file(encrypted_data, file_name):
+    pass
+
+def send_file_to_db():
+    pass
