@@ -151,18 +151,21 @@ def send_text_to_db(key, name, text, cpf):
     
     return send_to_db
 
-def read_file_data():
-    file_name = filedialog.askopenfilename(initialdir='/', filetypes=[("All Files", "*.*")])
+def get_file_information():
+    file_dir = filedialog.askopenfilename(initialdir='/', filetypes=[("All Files", "*.*")])
+    file_dir_list = file_dir.split('/')
+    file_name_with_extension = file_dir_list[-1]
+    file_name_list = file_name_with_extension.split('.')
     
-    file_data = ''
+    file_name = file_name_list[0]
+    file_extension = file_name_list[-1]
 
-    with open(file_name, 'r') as file:
-        file_data += file.read()
-
-    return file_data, file_name
+    return file_dir, file_name, file_extension
 
 def generate_encrypted_file(encrypted_data, file_name):
     pass
 
-def send_file_to_db():
-    pass
+def send_file_to_db(key, name, file_data, cpf, file_name):
+    send_to_db = func_db.save_file_on_db(key,name,file_data,cpf,file_name)
+    
+    return send_to_db
