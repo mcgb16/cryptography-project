@@ -15,8 +15,11 @@ def save_text_on_db(key, name, text, cpf):
     conn.commit()
     return 'Informações inseridas no banco de dados.'
 
-def save_file_on_db():
-    pass
+def save_file_on_db(key, name, file_dir, cpf, file_name):
+    insert_command = f"""INSERT INTO encrypted_files (`Key`, Name, Cpf, File_Name, File_Dir) VALUES ('{key}', '{name}', '{cpf}', '{file_name}', '{file_dir}')"""
+    cursor.execute(insert_command)
+    conn.commit()
+    return 'Informações inseridas no banco de dados.'
 
 def deactivate_db_connection():
     cursor.close()
