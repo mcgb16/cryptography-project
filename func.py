@@ -2,6 +2,7 @@ import random
 import string
 import secrets
 import func_db
+import shutil
 from fpdf import FPDF
 from tkinter import filedialog
 
@@ -110,7 +111,7 @@ def generate_unique_key():
         key += ''.join(secrets.choice(string.ascii_letters + string.digits))
     return key
 
-def generate_pdf_files(main_txt, pdf_type, user_name):
+def generate_pdf_files(main_txt, pdf_type, user_name, file_name):
     pdf_file = FPDF()
     pdf_file.add_page()
     cell_x = 190
@@ -119,7 +120,6 @@ def generate_pdf_files(main_txt, pdf_type, user_name):
     if pdf_type == 'key':
         header_text = f'{user_name}, muito obrigado por criptografar conosco! Segue abaixo sua Key única para descriptografia futura.'
         footer_text = 'Lembre-se: não a perca de forma alguma! Caso contrário, não será possível efetuar a descriptografia do texto gerado.'
-        file_name = 'Key'
         pdf_file.set_font("courier", size=12,style="I")
         pdf_file.multi_cell(cell_x,txt=header_text, align="C")
         pdf_file.set_y(page_h/2)
@@ -128,7 +128,6 @@ def generate_pdf_files(main_txt, pdf_type, user_name):
     
     elif pdf_type == 'encrypted_text':
         footer_text = f'{user_name}, para efetuar a descriptografia, utilize a key fornecida, junto do CPF cadastrado, no aplicativo.'
-        file_name = 'Encrypted_text'
         pdf_file.set_font("courier", size=11)
         pdf_file.multi_cell(cell_x,txt=main_txt, align="L")
 
@@ -141,8 +140,8 @@ def generate_pdf_files(main_txt, pdf_type, user_name):
     return 'Sucesso!'
 
 def pdf_files_controller(encrypted_text, key, user_name):
-    generate_pdf_files(encrypted_text, 'encrypted_text', user_name)
-    generate_pdf_files(key, 'key', user_name)
+    generate_pdf_files(encrypted_text, 'encrypted_text', user_name, 'Encrypted_text')
+    generate_pdf_files(key, 'key', user_name, 'Key')
     
     return 'Todos os pdfs criados com sucesso.' 
 
@@ -154,18 +153,35 @@ def send_text_to_db(key, name, text, cpf):
 def get_file_information():
     file_dir = filedialog.askopenfilename(initialdir='/', filetypes=[("All Files", "*.*")])
     file_dir_list = file_dir.split('/')
-    file_name_with_extension = file_dir_list[-1]
-    file_name_list = file_name_with_extension.split('.')
-    
-    file_name = file_name_list[0]
-    file_extension = file_name_list[-1]
+    file_name = file_dir_list[-1]
 
-    return file_dir, file_name, file_extension
+    return file_dir, file_name
 
 def generate_encrypted_file(encrypted_data, file_name):
-    pass
+    success_msg = 'Arquivo criptografado com êxito!'
+    
+    if '.docx' in file_name:
+        pass
+    elif '.xlsx' in file_name:
+        pass
+    elif '.pdf' in file_name:
+        pass
+    elif '.txt' or '.md' in file_name:
+        with open(file_name,'w') as file:
+            file.write(encrypted_data)
+        return success_msg
 
-def send_file_to_db(key, name, file_data, cpf, file_name):
-    send_to_db = func_db.save_file_on_db(key,name,file_data,cpf,file_name)
+
+def move_file_to_server(file_dir):   
+    server_dir = '/path/do/servidor'
+    try:
+        shutil.move(file_dir,server_dir)
+    except:
+        print('Erro')
+    finally:
+        return 'Arquivo movido ao servidor.'
+
+def send_file_to_db(key, name, cpf, file_name, file_dir):
+    send_to_db = func_db.save_file_on_db(key, name, cpf, file_name, file_dir)
     
     return send_to_db
