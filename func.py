@@ -157,7 +157,7 @@ def get_file_information():
 
     return file_dir, file_name
 
-def generate_encrypted_file(encrypted_data, file_name):
+def generate_encrypted_file(encrypted_data, file_name, file_dir):
     success_msg = 'Arquivo criptografado com êxito!'
     
     if '.docx' in file_name:
@@ -167,10 +167,9 @@ def generate_encrypted_file(encrypted_data, file_name):
     elif '.pdf' in file_name:
         pass
     elif '.txt' or '.md' in file_name:
-        with open(file_name,'w') as file:
+        with open(file_dir,'w') as file:
             file.write(encrypted_data)
         return success_msg
-
 
 def move_file_to_server(file_dir):   
     server_dir = '/path/do/servidor'
