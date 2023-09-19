@@ -20,19 +20,10 @@ class MainPage(Page):
         if self.title == 'Cryptography App':
             encrypt_text_button = tkinter.Button(self.root, text="Criptografar Textos", command=lambda: self.open_next_page('Criptografar Textos'))
             encrypt_text_button.pack()
+            encrypt_text_button = tkinter.Button(self.root, text="Criptografar Arquivos", command=lambda: self.open_next_page('Criptografar Arquivos'))
+            encrypt_text_button.pack()
         elif self.title == 'Criptografar Textos':
-            validate_input_len_cmd = self.root.register(self.validate_input_len)
-            self.count = 0
-
-            self.name_label = tkinter.Label(self.root, text='Insira seu nome')
-            self.name_label.pack()
-            self.insert_name = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "name"))
-            self.insert_name.pack()
-            
-            self.cpf_label = tkinter.Label(self.root, text='Insira seu CPF (apenas números)')
-            self.cpf_label.pack() 
-            self.insert_cpf = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
-            self.insert_cpf.pack()
+            self.create_common_fields()
             
             self.label_var_per_digit = tkinter.StringVar()
             self.label_var_per_digit.set(255)
@@ -44,14 +35,24 @@ class MainPage(Page):
             self.insert_text_to_encrypt.pack()
             self.insert_text_to_encrypt.bind("<KeyRelease>",self.update_label_when_digit)
 
-            buttons_frame = tkinter.Frame(self.root)
-            buttons_frame.pack()
+            buttons_frame_text_page = tkinter.Frame(self.root)
+            buttons_frame_text_page.pack()
 
-            save_button = tkinter.Button(buttons_frame, text="Criptografar", command=lambda: self.check_data())
+            save_button = tkinter.Button(buttons_frame_text_page, text="Criptografar", command=lambda: self.check_data())
             save_button.pack(side="left")
-            self.pdf_button = tkinter.Button(buttons_frame, text="Gerar Arquivos PDF")
+            self.pdf_button = tkinter.Button(buttons_frame_text_page, text="Gerar Arquivos PDF")
             self.pdf_button.pack(side="left")
             self.pdf_button.config(state='disabled')
+        elif self.title == 'Criptografar Arquivos':
+            self.create_common_fields()
+            
+            buttons_frame_files_page = tkinter.Frame(self.root)
+            buttons_frame_files_page.pack()
+            
+            save_button = tkinter.Button(buttons_frame_files_page, text="Criptografar", command=lambda: self.check_data())
+            save_button.pack(side="left")
+            self.search_file_button = tkinter.Button(buttons_frame_files_page, text="Procurar Arquivo") # inserir command de buscar arquivo no pc
+            self.search_file_button.pack(side="left")
 
     def open_next_page(self,title):
         self.root.destroy()
@@ -173,6 +174,20 @@ class MainPage(Page):
 
         self.unique_key_show = tkinter.Text(self.unique_key_frame, wrap="word", height=2, yscrollcommand=self.unique_key_scroll.set)
         self.unique_key_show.pack(fill="both", expand=True)
+
+    def create_common_fields(self):
+        validate_input_len_cmd = self.root.register(self.validate_input_len)
+        self.count = 0
+
+        self.name_label = tkinter.Label(self.root, text='Insira seu nome')
+        self.name_label.pack()
+        self.insert_name = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "name"))
+        self.insert_name.pack()
+        
+        self.cpf_label = tkinter.Label(self.root, text='Insira seu CPF (apenas números)')
+        self.cpf_label.pack() 
+        self.insert_cpf = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
+        self.insert_cpf.pack()
 
     def generate_pdf_file(self, encrypted_text,key, user_name):
         pdf_files = func.pdf_files_controller(encrypted_text, key, user_name)
