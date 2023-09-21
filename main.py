@@ -23,6 +23,7 @@ class MainPage(Page):
             encrypt_text_button = tkinter.Button(self.root, text="Criptografar Arquivos", command=lambda: self.open_next_page('Criptografar Arquivos'))
             encrypt_text_button.pack()
         elif self.title == 'Criptografar Textos':
+            cryp_type = 'text'
             self.create_common_fields()
             
             self.label_var_per_digit = tkinter.StringVar()
@@ -38,28 +39,30 @@ class MainPage(Page):
             buttons_frame_text_page = tkinter.Frame(self.root)
             buttons_frame_text_page.pack()
 
-            save_button = tkinter.Button(buttons_frame_text_page, text="Criptografar", command=lambda: self.check_data())
+            save_button = tkinter.Button(buttons_frame_text_page, text="Criptografar", command=lambda: self.check_data(cryp_type))
             save_button.pack(side="left")
             self.pdf_button = tkinter.Button(buttons_frame_text_page, text="Gerar Arquivos PDF")
             self.pdf_button.pack(side="left")
             self.pdf_button.config(state='disabled')
         elif self.title == 'Criptografar Arquivos':
+            cryp_type = 'file'
+
             self.create_common_fields()
             
             buttons_frame_files_page = tkinter.Frame(self.root)
             buttons_frame_files_page.pack()
             
-            save_button = tkinter.Button(buttons_frame_files_page, text="Criptografar", command=lambda: self.check_data())
+            save_button = tkinter.Button(buttons_frame_files_page, text="Criptografar", command=lambda: self.check_data(cryp_type))
             save_button.pack(side="left")
-            self.search_file_button = tkinter.Button(buttons_frame_files_page, text="Procurar Arquivo") # inserir command de buscar arquivo no pc
-            self.search_file_button.pack(side="left")
+            search_file_button = tkinter.Button(buttons_frame_files_page, text="Procurar Arquivo", command=lambda: self.search_file()) # inserir command de buscar arquivo no pc
+            search_file_button.pack(side="left")
 
     def open_next_page(self,title):
         self.root.destroy()
         next_page = MainPage(title)
         next_page.root.mainloop()
     
-    def check_data(self):
+    def check_data(self, cryp_type):
         self.count += 1
         data_name = self.insert_name.get()
         data_cpf = self.insert_cpf.get()
@@ -192,6 +195,14 @@ class MainPage(Page):
     def generate_pdf_file(self, encrypted_text,key, user_name):
         pdf_files = func.pdf_files_controller(encrypted_text, key, user_name)
         self.validation_label.config(text=pdf_files)
+
+    def search_file(self):
+        self.file_dir, self.file_name = func.search_file()
+        
+        if self.file_dir:
+            self.file_name_label = tkinter.Label(self.root, text=f'Arquivo escolhido: {self.file_name}')
+            self.file_name_label.pack()
+
 
 if __name__ == "__main__":
     main_page = MainPage('Cryptography App')
