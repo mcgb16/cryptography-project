@@ -150,7 +150,7 @@ def send_text_to_db(key, name, text, cpf):
     
     return send_to_db
 
-def get_file_information():
+def search_file():
     file_dir = filedialog.askopenfilename(initialdir='/', filetypes=[("All Files", "*.*")])
     file_dir_list = file_dir.split('/')
     file_name = file_dir_list[-1]
