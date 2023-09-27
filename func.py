@@ -79,6 +79,7 @@ def verify_cpf(user_cpf):
 def verify_len_input(cpf, name, text_to_encrypt):
     null_message = 'Por favor preencha todos os campos!'
     len_message_text_to_encrypt = 'O limite máximo para criptografia de textos é de 255 caracteres.'
+    no_dir_message = "Selecione um arquivo a ser criptografado, por favor."
 
     if cpf == '':
         return null_message
@@ -88,6 +89,8 @@ def verify_len_input(cpf, name, text_to_encrypt):
         return null_message
     elif len(text_to_encrypt) > 255:
         return len_message_text_to_encrypt
+    elif text_to_encrypt == 'no dir':
+        return no_dir_message
     else:
         return 'valid'
 
@@ -150,7 +153,7 @@ def send_text_to_db(key, name, text, cpf):
     
     return send_to_db
 
-def get_file_information():
+def search_file():
     file_dir = filedialog.askopenfilename(initialdir='/', filetypes=[("All Files", "*.*")])
     file_dir_list = file_dir.split('/')
     file_name = file_dir_list[-1]
@@ -171,14 +174,15 @@ def generate_encrypted_file(encrypted_data, file_name, file_dir):
             file.write(encrypted_data)
         return success_msg
 
-def move_file_to_server(file_dir):   
-    server_dir = '/path/do/servidor'
+def move_file_to_server(file_dir, file_name):   
+    server_dir = 'C:\\Users\\mathe\\Desktop\\sv'
     try:
         shutil.move(file_dir,server_dir)
+        server_file_dir = server_dir + file_name
     except:
-        print('Erro')
+        print('Erro ao mover o arquivo para o servidor.')
     finally:
-        return 'Arquivo movido ao servidor.'
+        return server_file_dir
 
 def send_file_to_db(key, name, cpf, file_name, file_dir):
     send_to_db = func_db.save_file_on_db(key, name, cpf, file_name, file_dir)
