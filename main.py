@@ -54,7 +54,7 @@ class MainPage(Page):
             
             save_button = tkinter.Button(buttons_frame_files_page, text="Criptografar", command=lambda: self.check_data(cryp_type))
             save_button.pack(side="left")
-            search_file_button = tkinter.Button(buttons_frame_files_page, text="Procurar Arquivo", command=lambda: self.search_file()) # inserir command de buscar arquivo no pc
+            search_file_button = tkinter.Button(buttons_frame_files_page, text="Procurar Arquivo", command=lambda: self.search_file())
             search_file_button.pack(side="left")
 
     def open_next_page(self,title):
@@ -66,13 +66,15 @@ class MainPage(Page):
         self.count += 1
         data_name = self.insert_name.get()
         data_cpf = self.insert_cpf.get()
-        try:
-            data_text_to_encrypt = self.current_text
-        except:
-            data_text_to_encrypt = ''
         
-        if self.count == 1:
-            self.create_common_widgets()
+        if cryp_type == 'text':
+            try:
+                data_text_to_encrypt = self.current_text
+            except:
+                data_text_to_encrypt = ''
+            
+            if self.count == 1:
+                self.create_common_widgets(cryp_type)
 
             len_validation = func.verify_len_input(data_cpf, data_name, data_text_to_encrypt)
 
@@ -80,7 +82,7 @@ class MainPage(Page):
                 cpf_validation = func.verify_cpf(data_cpf)
                 
                 if cpf_validation == 'cpf valid':
-                    encrypted_text = func.generate_crypt_data(data_text_to_encrypt)
+                    encrypted_text = func.generate_encrypted_data(data_text_to_encrypt)
                     
                     self.encrypt_text_show.insert("1.0", encrypted_text)
                     self.encrypt_text_show.config(state='disabled')
@@ -104,38 +106,41 @@ class MainPage(Page):
             else:
                 self.validation_label.config(text=len_validation)
                 self.pdf_button.config(state='disabled')
-        else:
+        elif cryp_type == 'file':                        
+            try:
+                data_text_to_encrypt = self.file_dir
+            except:
+                data_text_to_encrypt = 'no dir'
+
+            if self.count == 1:
+                self.create_common_widgets(cryp_type)
+
             len_validation = func.verify_len_input(data_cpf, data_name, data_text_to_encrypt)
 
             if len_validation == 'valid':
-                cpf_validation = func.verify_cpf(data_cpf)
-                
-                if cpf_validation == 'cpf valid':
-                    encrypted_text = func.generate_crypt_data(data_text_to_encrypt)
+                data_file_name = self.file_name
+                data_file_dir = self.file_dir
 
-                    self.encrypt_text_show.config(state='normal')
-                    self.encrypt_text_show.delete("1.0", "end")
-                    self.encrypt_text_show.insert("1.0", encrypted_text)
-                    self.encrypt_text_show.config(state='disabled')
+                cpf_validation = func.verify_cpf(data_cpf)
+
+                if cpf_validation == 'cpf valid':
+                    encrypted_text = func.generate_encrypted_data(data_text_to_encrypt)
+
+                    server_file_dir = func.move_file_to_server(data_file_dir, data_file_name)
+
+                    encrypted_file = func.generate_encrypted_file(encrypted_text, data_file_name, data_file_dir)
+                    self.file_name_label.config(text=encrypted_file)
 
                     unique_key = func.generate_unique_key()
 
-                    self.unique_key_show.config(state='normal')
-                    self.unique_key_show.delete("1.0", "end")
-                    self.unique_key_show.insert("1.0", unique_key)
-                    self.unique_key_show.config(state='disabled')
+                    save_on_db = func.send_file_to_db(unique_key, data_name, data_cpf, data_file_name, server_file_dir)
 
-                    save_on_db = func.send_text_to_db(unique_key, data_name, data_text_to_encrypt, data_cpf)
                     self.validation_label.config(text=save_on_db)
-
-                    self.pdf_button.config(state='active', command=lambda: self.generate_pdf_file(encrypted_text, unique_key, data_name))
 
                 else:
                     self.validation_label.config(text=cpf_validation)
-                    self.pdf_button.config(state='disabled')
             else:
                 self.validation_label.config(text=len_validation)
-                self.pdf_button.config(state='disabled')
         
     def validate_input_len(self, P, input_type):
         if input_type == 'name':
@@ -151,32 +156,33 @@ class MainPage(Page):
         self.current_text = self.insert_text_to_encrypt.get("1.0", "end-1c")
         self.label_var_per_digit.set(255 - len(self.current_text))
 
-    def create_common_widgets(self):
+    def create_common_widgets(self, cryp_type):
         self.validation_label = tkinter.Label(self.root, text='')
         self.validation_label.pack()
 
-        self.encrypt_text_label = tkinter.Label(self.root, text='Texto criptografado:')
-        self.encrypt_text_label.pack()
-        self.encrypt_frame = tkinter.Frame(self.root)
-        self.encrypt_frame.pack(fill="both", expand=True)
+        if cryp_type == 'text':
+            self.encrypt_text_label = tkinter.Label(self.root, text='Texto criptografado:')
+            self.encrypt_text_label.pack()
+            self.encrypt_frame = tkinter.Frame(self.root)
+            self.encrypt_frame.pack(fill="both", expand=True)
 
-        self.encrypt_text_scroll = tkinter.Scrollbar(self.encrypt_frame)
-        self.encrypt_text_scroll.pack(side="right", fill="y")
+            self.encrypt_text_scroll = tkinter.Scrollbar(self.encrypt_frame)
+            self.encrypt_text_scroll.pack(side="right", fill="y")
 
-        self.encrypt_text_show = tkinter.Text(self.encrypt_frame, wrap="word", height=5, yscrollcommand=self.encrypt_text_scroll.set)
-        self.encrypt_text_show.pack(fill="both", expand=True)
+            self.encrypt_text_show = tkinter.Text(self.encrypt_frame, wrap="word", height=5, yscrollcommand=self.encrypt_text_scroll.set)
+            self.encrypt_text_show.pack(fill="both", expand=True)
 
-        self.unique_key_label = tkinter.Label(self.root, text='Key para descriptografar:')
-        self.unique_key_label.pack()
+            self.unique_key_label = tkinter.Label(self.root, text='Key para descriptografar:')
+            self.unique_key_label.pack()
 
-        self.unique_key_frame = tkinter.Frame(self.root)
-        self.unique_key_frame.pack(fill="both", expand=True)
+            self.unique_key_frame = tkinter.Frame(self.root)
+            self.unique_key_frame.pack(fill="both", expand=True)
 
-        self.unique_key_scroll = tkinter.Scrollbar(self.unique_key_frame)
-        self.unique_key_scroll.pack(side="right", fill="y")
+            self.unique_key_scroll = tkinter.Scrollbar(self.unique_key_frame)
+            self.unique_key_scroll.pack(side="right", fill="y")
 
-        self.unique_key_show = tkinter.Text(self.unique_key_frame, wrap="word", height=2, yscrollcommand=self.unique_key_scroll.set)
-        self.unique_key_show.pack(fill="both", expand=True)
+            self.unique_key_show = tkinter.Text(self.unique_key_frame, wrap="word", height=2, yscrollcommand=self.unique_key_scroll.set)
+            self.unique_key_show.pack(fill="both", expand=True)
 
     def create_common_fields(self):
         validate_input_len_cmd = self.root.register(self.validate_input_len)
@@ -192,7 +198,7 @@ class MainPage(Page):
         self.insert_cpf = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
         self.insert_cpf.pack()
 
-    def generate_pdf_file(self, encrypted_text,key, user_name):
+    def generate_pdf_file(self, encrypted_text, key, user_name):
         pdf_files = func.pdf_files_controller(encrypted_text, key, user_name)
         self.validation_label.config(text=pdf_files)
 
