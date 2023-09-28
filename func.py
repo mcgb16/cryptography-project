@@ -127,8 +127,7 @@ def generate_pdf_files(main_txt, pdf_type, user_name, file_name):
         pdf_file.multi_cell(cell_x,txt=header_text, align="C")
         pdf_file.set_y(page_h/2)
         pdf_file.set_font("courier", size=11)
-        pdf_file.multi_cell(cell_x,txt=main_txt, align="L")
-    
+        pdf_file.multi_cell(cell_x,txt=main_txt, align="L")  
     elif pdf_type == 'encrypted_text':
         footer_text = f'{user_name}, para efetuar a descriptografia, utilize a key fornecida, junto do CPF cadastrado, no aplicativo.'
         pdf_file.set_font("courier", size=11)
@@ -142,10 +141,13 @@ def generate_pdf_files(main_txt, pdf_type, user_name, file_name):
 
     return 'Sucesso!'
 
-def pdf_files_controller(encrypted_text, key, user_name):
-    generate_pdf_files(encrypted_text, 'encrypted_text', user_name, 'Encrypted_text')
-    generate_pdf_files(key, 'key', user_name, 'Key')
-    
+def pdf_files_controller(encrypted_text, key, user_name, cryp_type):
+    if cryp_type == 'text':
+        generate_pdf_files(encrypted_text, 'encrypted_text', user_name, 'Encrypted_text')
+        generate_pdf_files(key, 'key', user_name, 'Key')
+    elif cryp_type == 'file':
+        generate_pdf_files(key, 'key', user_name, 'Key')
+
     return 'Todos os pdfs criados com sucesso.' 
 
 def send_text_to_db(key, name, text, cpf):
@@ -168,7 +170,7 @@ def generate_encrypted_file(encrypted_data, file_name, file_dir):
     elif '.xlsx' in file_name:
         pass
     elif '.pdf' in file_name:
-        pass
+        pdf_file = pdf_files_controller(encrypted_data, '','','encryp_file')
     elif '.txt' or '.md' in file_name:
         with open(file_dir,'w') as file:
             file.write(encrypted_data)
@@ -178,7 +180,8 @@ def move_file_to_server(file_dir, file_name):
     server_dir = 'C:\\Users\\mathe\\Desktop\\sv'
     try:
         shutil.move(file_dir,server_dir)
-        server_file_dir = server_dir + file_name
+        server_file_dir = server_dir + "\\" + file_name
+        server_file_dir = server_file_dir.replace("\\", "/")
     except:
         print('Erro ao mover o arquivo para o servidor.')
     finally:

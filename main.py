@@ -61,7 +61,7 @@ class MainPage(Page):
         self.root.destroy()
         next_page = MainPage(title)
         next_page.root.mainloop()
-    
+
     def check_data(self, cryp_type):
         self.count += 1
         data_name = self.insert_name.get()
@@ -98,7 +98,7 @@ class MainPage(Page):
                     save_on_db = func.send_text_to_db(unique_key, data_name, data_text_to_encrypt, data_cpf)
                     self.validation_label.config(text=save_on_db)
 
-                    self.pdf_button.config(state='active', command=lambda: self.generate_pdf_file(encrypted_text, unique_key, data_name))
+                    self.pdf_button.config(state='active', command=lambda: self.generate_pdf_file(encrypted_text, unique_key, data_name, cryp_type))
 
                 else:
                     self.validation_label.config(text=cpf_validation)
@@ -106,7 +106,7 @@ class MainPage(Page):
             else:
                 self.validation_label.config(text=len_validation)
                 self.pdf_button.config(state='disabled')
-        elif cryp_type == 'file':                        
+        elif cryp_type == 'file':
             try:
                 data_text_to_encrypt = self.file_dir
             except:
@@ -135,13 +135,15 @@ class MainPage(Page):
 
                     save_on_db = func.send_file_to_db(unique_key, data_name, data_cpf, data_file_name, server_file_dir)
 
+                    generate_key_file = self.generate_pdf_file(encrypted_text, unique_key, data_name, cryp_type)
+
                     self.validation_label.config(text=save_on_db)
 
                 else:
                     self.validation_label.config(text=cpf_validation)
             else:
                 self.validation_label.config(text=len_validation)
-        
+
     def validate_input_len(self, P, input_type):
         if input_type == 'name':
             if len(P) <= 45:
@@ -198,8 +200,8 @@ class MainPage(Page):
         self.insert_cpf = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
         self.insert_cpf.pack()
 
-    def generate_pdf_file(self, encrypted_text, key, user_name):
-        pdf_files = func.pdf_files_controller(encrypted_text, key, user_name)
+    def generate_pdf_file(self, encrypted_text, key, user_name, cryp_type):
+        pdf_files = func.pdf_files_controller(encrypted_text, key, user_name, cryp_type)
         self.validation_label.config(text=pdf_files)
 
     def search_file(self):
