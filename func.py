@@ -5,6 +5,8 @@ import func_db
 import shutil
 from fpdf import FPDF
 from tkinter import filedialog
+from docx import Document
+import openpyxl
 
 def verify_cpf(user_cpf):
     cpf_not_valid = 'CPF não é válido. Cheque a digitação e lembre-se: apenas números.'
@@ -132,6 +134,12 @@ def generate_pdf_files(main_txt, pdf_type, user_name, file_name):
         footer_text = f'{user_name}, para efetuar a descriptografia, utilize a key fornecida, junto do CPF cadastrado, no aplicativo.'
         pdf_file.set_font("courier", size=11)
         pdf_file.multi_cell(cell_x,txt=main_txt, align="L")
+    elif pdf_type == 'encryp_file':
+        pdf_file.set_font("courier", size=11)
+        pdf_file.multi_cell(cell_x,txt=main_txt, align="L")
+        pdf_file.output(file_name)
+        
+        return "Sucesso!"
 
     pdf_file.set_y(page_h - pdf_file.t_margin - pdf_file.b_margin)
     pdf_file.set_font("courier", size=12,style="I")
@@ -141,12 +149,14 @@ def generate_pdf_files(main_txt, pdf_type, user_name, file_name):
 
     return 'Sucesso!'
 
-def pdf_files_controller(encrypted_text, key, user_name, cryp_type):
+def pdf_files_controller(encrypted_text, key, user_name, cryp_type, file_name=''):
     if cryp_type == 'text':
         generate_pdf_files(encrypted_text, 'encrypted_text', user_name, 'Encrypted_text')
         generate_pdf_files(key, 'key', user_name, 'Key')
     elif cryp_type == 'file':
         generate_pdf_files(key, 'key', user_name, 'Key')
+    elif cryp_type == 'encryp_file':
+        generate_pdf_files(encrypted_text,'encryp_file', user_name, file_name)
 
     return 'Todos os pdfs criados com sucesso.' 
 
@@ -166,11 +176,27 @@ def generate_encrypted_file(encrypted_data, file_name, file_dir):
     success_msg = 'Arquivo criptografado com êxito!'
     
     if '.docx' in file_name:
-        pass
+        docx_file = Document()
+        docx_file.add_paragraph(encrypted_data)
+        docx_file.save(file_dir)
+        return success_msg
     elif '.xlsx' in file_name:
-        pass
+        wb = openpyxl.Workbook()
+        encrypted_sheet = wb.active
+        
+        encrypted_data_len = len(encrypted_data)
+
+        for i in range(1,200):
+
+            random_len = random.randint(encrypted_data_len//2, encrypted_data_len)
+            encrypted_sheet[f'A{i}'] = encrypted_data[random_len:]
+
+        wb.save(file_dir)
+
+        return success_msg
     elif '.pdf' in file_name:
-        pdf_file = pdf_files_controller(encrypted_data, '','','encryp_file')
+        pdf_file = pdf_files_controller(encrypted_data, '','','encryp_file', file_dir)
+        return success_msg
     elif '.txt' or '.md' in file_name:
         with open(file_dir,'w') as file:
             file.write(encrypted_data)
@@ -182,10 +208,9 @@ def move_file_to_server(file_dir, file_name):
         shutil.move(file_dir,server_dir)
         server_file_dir = server_dir + "\\" + file_name
         server_file_dir = server_file_dir.replace("\\", "/")
+        return server_file_dir
     except:
         print('Erro ao mover o arquivo para o servidor.')
-    finally:
-        return server_file_dir
 
 def send_file_to_db(key, name, cpf, file_name, file_dir):
     send_to_db = func_db.save_file_on_db(key, name, cpf, file_name, file_dir)
