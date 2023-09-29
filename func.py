@@ -5,6 +5,7 @@ import func_db
 import shutil
 from fpdf import FPDF
 from tkinter import filedialog
+from docx import Document
 
 def verify_cpf(user_cpf):
     cpf_not_valid = 'CPF não é válido. Cheque a digitação e lembre-se: apenas números.'
@@ -174,7 +175,10 @@ def generate_encrypted_file(encrypted_data, file_name, file_dir):
     success_msg = 'Arquivo criptografado com êxito!'
     
     if '.docx' in file_name:
-        pass
+        docx_file = Document()
+        docx_file.add_paragraph(encrypted_data)
+        docx_file.save(file_dir)
+        return success_msg
     elif '.xlsx' in file_name:
         pass
     elif '.pdf' in file_name:
