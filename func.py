@@ -6,6 +6,7 @@ import shutil
 from fpdf import FPDF
 from tkinter import filedialog
 from docx import Document
+import openpyxl
 
 def verify_cpf(user_cpf):
     cpf_not_valid = 'CPF não é válido. Cheque a digitação e lembre-se: apenas números.'
@@ -180,7 +181,19 @@ def generate_encrypted_file(encrypted_data, file_name, file_dir):
         docx_file.save(file_dir)
         return success_msg
     elif '.xlsx' in file_name:
-        pass
+        wb = openpyxl.Workbook()
+        encrypted_sheet = wb.active
+        
+        encrypted_data_len = len(encrypted_data)
+
+        for i in range(1,200):
+
+            random_len = random.randint(encrypted_data_len//2, encrypted_data_len)
+            encrypted_sheet[f'A{i}'] = encrypted_data[random_len:]
+
+        wb.save(file_dir)
+
+        return success_msg
     elif '.pdf' in file_name:
         pdf_file = pdf_files_controller(encrypted_data, '','','encryp_file', file_dir)
         return success_msg
