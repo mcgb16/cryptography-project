@@ -189,6 +189,7 @@ class MainPage(Page):
     def create_common_fields(self):
         validate_input_len_cmd = self.root.register(self.validate_input_len)
         self.count = 0
+        self.count_search_file = 0
 
         self.name_label = tkinter.Label(self.root, text='Insira seu nome')
         self.name_label.pack()
@@ -208,8 +209,13 @@ class MainPage(Page):
         self.file_dir, self.file_name = func.search_file()
         
         if self.file_dir:
-            self.file_name_label = tkinter.Label(self.root, text=f'Arquivo escolhido: {self.file_name}')
-            self.file_name_label.pack()
+            if self.count_search_file == 0:
+                self.file_name_label = tkinter.Label(self.root, text=f'Arquivo escolhido: {self.file_name}')
+                self.file_name_label.pack()
+            else:
+                self.file_name_label.config(text=f'Arquivo escolhido: {self.file_name}')
+            
+            self.count_search_file += 1
 
 
 if __name__ == "__main__":
