@@ -20,11 +20,13 @@ class MainPage(Page):
         if self.title == 'Cryptography App':
             encrypt_text_button = tkinter.Button(self.root, text="Criptografar Textos", command=lambda: self.open_next_page('Criptografar Textos'))
             encrypt_text_button.pack()
-            encrypt_text_button = tkinter.Button(self.root, text="Criptografar Arquivos", command=lambda: self.open_next_page('Criptografar Arquivos'))
-            encrypt_text_button.pack()
+            encrypt_file_button = tkinter.Button(self.root, text="Criptografar Arquivos", command=lambda: self.open_next_page('Criptografar Arquivos'))
+            encrypt_file_button.pack()
+            decrypt_button = tkinter.Button(self.root, text="Descriptografia", command=lambda: self.open_next_page('Descriptografia'))
+            decrypt_button.pack()
         elif self.title == 'Criptografar Textos':
             cryp_type = 'text'
-            self.create_common_fields()
+            self.create_common_fields(cryp_type)
             
             self.label_var_per_digit = tkinter.StringVar()
             self.label_var_per_digit.set(255)
@@ -47,7 +49,7 @@ class MainPage(Page):
         elif self.title == 'Criptografar Arquivos':
             cryp_type = 'file'
 
-            self.create_common_fields()
+            self.create_common_fields(cryp_type)
             
             buttons_frame_files_page = tkinter.Frame(self.root)
             buttons_frame_files_page.pack()
@@ -56,6 +58,9 @@ class MainPage(Page):
             save_button.pack(side="left")
             search_file_button = tkinter.Button(buttons_frame_files_page, text="Procurar Arquivo", command=lambda: self.search_file())
             search_file_button.pack(side="left")
+        elif self.title == 'Descriptografia':
+            cryp_type = 'decrypt'
+            self.create_common_fields(cryp_type)
 
     def open_next_page(self,title):
         self.root.destroy()
@@ -186,20 +191,33 @@ class MainPage(Page):
             self.unique_key_show = tkinter.Text(self.unique_key_frame, wrap="word", height=2, yscrollcommand=self.unique_key_scroll.set)
             self.unique_key_show.pack(fill="both", expand=True)
 
-    def create_common_fields(self):
-        validate_input_len_cmd = self.root.register(self.validate_input_len)
-        self.count = 0
-        self.count_search_file = 0
+    def create_common_fields(self, cryp_type):
+        if cryp_type == 'file' or cryp_type == 'text':
+            validate_input_len_cmd = self.root.register(self.validate_input_len)
+            self.count = 0
+            self.count_search_file = 0
 
-        self.name_label = tkinter.Label(self.root, text='Insira seu nome')
-        self.name_label.pack()
-        self.insert_name = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "name"))
-        self.insert_name.pack()
-        
-        self.cpf_label = tkinter.Label(self.root, text='Insira seu CPF (apenas números)')
-        self.cpf_label.pack() 
-        self.insert_cpf = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
-        self.insert_cpf.pack()
+            self.name_label = tkinter.Label(self.root, text='Insira seu nome')
+            self.name_label.pack()
+            self.insert_name = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "name"))
+            self.insert_name.pack()
+            
+            self.cpf_label = tkinter.Label(self.root, text='Insira seu CPF (apenas números)')
+            self.cpf_label.pack() 
+            self.insert_cpf = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
+            self.insert_cpf.pack()
+        elif cryp_type == 'decrypt':
+            validate_input_len_cmd = self.root.register(self.validate_input_len)
+
+            self.cpf_label = tkinter.Label(self.root, text='Insira seu CPF (apenas números)')
+            self.cpf_label.pack() 
+            self.insert_cpf = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
+            self.insert_cpf.pack()
+            
+            self.key_label = tkinter.Label(self.root, text='Insira a Key para descriptografia')
+            self.key_label.pack() 
+            self.insert_key = tkinter.Entry(self.root, justify='center',width=100, validate="key")
+            self.insert_key.pack()
 
     def generate_pdf_file(self, encrypted_text, key, user_name, cryp_type):
         pdf_files = func.pdf_files_controller(encrypted_text, key, user_name, cryp_type)
