@@ -215,9 +215,17 @@ class MainPage(Page):
             self.insert_cpf.pack()
             
             self.key_label = tkinter.Label(self.root, text='Insira a Key para descriptografia')
-            self.key_label.pack() 
+            self.key_label.pack()
             self.insert_key = tkinter.Entry(self.root, justify='center',width=100, validate="key")
             self.insert_key.pack()
+
+            decrypt_options = ['Descriptografar Texto','Descriptografar Arquivo']
+            self.selected_picklist_option = tkinter.StringVar(self.root)
+            
+            self.picklist_label = tkinter.Label(self.root, text='Selecione o que será descriptografado')
+            self.picklist_label.pack()
+            self.picklist = tkinter.OptionMenu(self.root, self.selected_picklist_option, *decrypt_options)
+            self.picklist.pack()
 
     def generate_pdf_file(self, encrypted_text, key, user_name, cryp_type):
         pdf_files = func.pdf_files_controller(encrypted_text, key, user_name, cryp_type)
