@@ -21,6 +21,12 @@ def save_file_on_db(key, name, cpf, file_name, file_dir):
     conn.commit()
     return 'Informações inseridas no banco de dados.'
 
+def search_text_on_db(key, cpf):
+    pass
+
+def search_file_on_db(key, cpf):
+    pass
+
 def deactivate_db_connection():
     cursor.close()
     conn.close()
