@@ -60,7 +60,14 @@ class MainPage(Page):
             search_file_button.pack(side="left")
         elif self.title == 'Descriptografia':
             cryp_type = 'decrypt'
+
             self.create_common_fields(cryp_type)
+
+            buttons_frame_decryp_page = tkinter.Frame(self.root)
+            buttons_frame_decryp_page.pack()
+
+            decryp_button = tkinter.Button(buttons_frame_decryp_page, text='Descriptografar', command=lambda: self.check_decryp(cryp_type))
+            decryp_button.pack(side='left')
 
     def open_next_page(self,title):
         self.root.destroy()
@@ -81,7 +88,7 @@ class MainPage(Page):
             if self.count == 1:
                 self.create_common_widgets(cryp_type)
 
-            len_validation = func.verify_len_input(data_cpf, data_name, data_text_to_encrypt)
+            len_validation = func.verify_len_input_cryp(data_cpf, data_name, data_text_to_encrypt)
 
             if len_validation == 'valid':
                 cpf_validation = func.verify_cpf(data_cpf)
@@ -120,7 +127,7 @@ class MainPage(Page):
             if self.count == 1:
                 self.create_common_widgets(cryp_type)
 
-            len_validation = func.verify_len_input(data_cpf, data_name, data_text_to_encrypt)
+            len_validation = func.verify_len_input_cryp(data_cpf, data_name, data_text_to_encrypt)
 
             if len_validation == 'valid':
                 data_file_name = self.file_name
@@ -208,6 +215,7 @@ class MainPage(Page):
             self.insert_cpf.pack()
         elif cryp_type == 'decrypt':
             validate_input_len_cmd = self.root.register(self.validate_input_len)
+            self.count = 0
 
             self.cpf_label = tkinter.Label(self.root, text='Insira seu CPF (apenas números)')
             self.cpf_label.pack() 
@@ -243,6 +251,29 @@ class MainPage(Page):
             
             self.count_search_file += 1
 
+    def check_decryp(self, cryp_type):
+        data_cpf = self.insert_cpf
+        data_key = self.insert_key
+
+        self.count += 1
+
+        if self.count == 1:
+            self.create_common_widgets(cryp_type)
+
+        len_validation = func.verify_len_input_decryp(data_cpf, data_key)
+        
+        if len_validation == 'valid':
+            cpf_validation = func.verify_cpf(data_cpf)
+
+            if cpf_validation == 'cpf valid':
+                pass
+
+            else:
+                self.validation_label.config(text=cpf_validation)
+                self.pdf_button.config(state='disabled')
+        else:
+            self.validation_label.config(text=len_validation)
+            self.pdf_button.config(state='disabled')
 
 if __name__ == "__main__":
     main_page = MainPage('Cryptography App')
