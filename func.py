@@ -218,19 +218,25 @@ def send_file_to_db(key, name, cpf, file_name, file_dir):
     return send_to_db
 
 def search_on_db(key, cpf, decryp_type):
-    if decryp_type == 'txt':
+    if decryp_type == 'text':
         verify_db = func_db.search_text_on_db(key, cpf)
         return verify_db
     elif decryp_type == 'file':
         verify_db = func_db.search_file_on_db(key, cpf)
         return verify_db
 
-def verify_len_input_decryp(cpf, key):
+def verify_len_input_decryp(cpf, key, picklist):
     null_message = 'Por favor preencha todos os campos!'
+    null_picklist_message = 'Selecione um tipo de descriptografia.'
     
     if cpf == '':
         return null_message
     elif key == '':
         return null_message
+    elif picklist == '':
+        return null_picklist_message
     else:
         return 'valid'
+
+def save_decrypted_file():
+    pass
