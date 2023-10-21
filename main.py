@@ -197,6 +197,8 @@ class MainPage(Page):
 
             self.unique_key_show = tkinter.Text(self.unique_key_frame, wrap="word", height=2, yscrollcommand=self.unique_key_scroll.set)
             self.unique_key_show.pack(fill="both", expand=True)
+        elif cryp_type == 'decryp_text':
+            pass
 
     def create_common_fields(self, cryp_type):
         if cryp_type == 'file' or cryp_type == 'text':
@@ -229,10 +231,11 @@ class MainPage(Page):
 
             decrypt_options = ['Descriptografar Texto','Descriptografar Arquivo']
             self.selected_picklist_option = tkinter.StringVar(self.root)
+            self.picklist_selection = ''
             
             self.picklist_label = tkinter.Label(self.root, text='Selecione o que será descriptografado')
             self.picklist_label.pack()
-            self.picklist = tkinter.OptionMenu(self.root, self.selected_picklist_option, *decrypt_options)
+            self.picklist = tkinter.OptionMenu(self.root, self.selected_picklist_option, *decrypt_options, command=self.check_picklist_selection)
             self.picklist.pack()
 
     def generate_pdf_file(self, encrypted_text, key, user_name, cryp_type):
@@ -254,26 +257,41 @@ class MainPage(Page):
     def check_decryp(self, cryp_type):
         data_cpf = self.insert_cpf
         data_key = self.insert_key
+        data_picklist = self.picklist_selection
 
         self.count += 1
 
         if self.count == 1:
             self.create_common_widgets(cryp_type)
 
-        len_validation = func.verify_len_input_decryp(data_cpf, data_key)
+        len_validation = func.verify_len_input_decryp(data_cpf, data_key, data_picklist)
         
         if len_validation == 'valid':
             cpf_validation = func.verify_cpf(data_cpf)
 
-            if cpf_validation == 'cpf valid':
-                pass
+            if cpf_validation == 'cpf valid':                
+                search_db_validation, search_db_return = func.search_on_db(data_key, data_cpf, data_picklist)
 
+                if search_db_validation == 'found':
+                    if data_picklist == 'text':
+                        self.create_common_widgets('decryp_text')
+                    elif data_picklist == 'file':
+                        func.save_decrypted_file()
+                else:
+                    self.validation_label.config(text=search_db_return)
+                    self.pdf_button.config(state='disabled')
             else:
                 self.validation_label.config(text=cpf_validation)
                 self.pdf_button.config(state='disabled')
         else:
             self.validation_label.config(text=len_validation)
             self.pdf_button.config(state='disabled')
+
+    def check_picklist_selection(self, selection):
+        if selection == 'Descriptografar Texto':
+            self.picklist_selection = 'text'
+        elif selection == 'Descriptografar Arquivo':
+            self.picklist_selection = 'file'
 
 if __name__ == "__main__":
     main_page = MainPage('Cryptography App')
