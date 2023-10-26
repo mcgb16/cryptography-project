@@ -78,7 +78,7 @@ def verify_cpf(user_cpf):
     else:
         return cpf_not_valid
 
-def verify_len_input(cpf, name, text_to_encrypt):
+def verify_len_input_cryp(cpf, name, text_to_encrypt):
     null_message = 'Por favor preencha todos os campos!'
     len_message_text_to_encrypt = 'O limite máximo para criptografia de textos é de 255 caracteres.'
     no_dir_message = "Selecione um arquivo a ser criptografado, por favor."
@@ -216,3 +216,27 @@ def send_file_to_db(key, name, cpf, file_name, file_dir):
     send_to_db = func_db.save_file_on_db(key, name, cpf, file_name, file_dir)
     
     return send_to_db
+
+def search_on_db(key, cpf, decryp_type):
+    if decryp_type == 'text':
+        verify_db = func_db.search_text_on_db(key, cpf)
+        return verify_db
+    elif decryp_type == 'file':
+        verify_db = func_db.search_file_on_db(key, cpf)
+        return verify_db
+
+def verify_len_input_decryp(cpf, key, picklist):
+    null_message = 'Por favor preencha todos os campos!'
+    null_picklist_message = 'Selecione um tipo de descriptografia.'
+    
+    if cpf == '':
+        return null_message
+    elif key == '':
+        return null_message
+    elif picklist == '':
+        return null_picklist_message
+    else:
+        return 'valid'
+
+def save_decrypted_file():
+    pass

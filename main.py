@@ -60,7 +60,14 @@ class MainPage(Page):
             search_file_button.pack(side="left")
         elif self.title == 'Descriptografia':
             cryp_type = 'decrypt'
+
             self.create_common_fields(cryp_type)
+
+            buttons_frame_decryp_page = tkinter.Frame(self.root)
+            buttons_frame_decryp_page.pack()
+
+            decryp_button = tkinter.Button(buttons_frame_decryp_page, text='Descriptografar', command=lambda: self.check_decryp(cryp_type))
+            decryp_button.pack(side='left')
 
     def open_next_page(self,title):
         self.root.destroy()
@@ -81,7 +88,7 @@ class MainPage(Page):
             if self.count == 1:
                 self.create_common_widgets(cryp_type)
 
-            len_validation = func.verify_len_input(data_cpf, data_name, data_text_to_encrypt)
+            len_validation = func.verify_len_input_cryp(data_cpf, data_name, data_text_to_encrypt)
 
             if len_validation == 'valid':
                 cpf_validation = func.verify_cpf(data_cpf)
@@ -120,7 +127,7 @@ class MainPage(Page):
             if self.count == 1:
                 self.create_common_widgets(cryp_type)
 
-            len_validation = func.verify_len_input(data_cpf, data_name, data_text_to_encrypt)
+            len_validation = func.verify_len_input_cryp(data_cpf, data_name, data_text_to_encrypt)
 
             if len_validation == 'valid':
                 data_file_name = self.file_name
@@ -190,6 +197,15 @@ class MainPage(Page):
 
             self.unique_key_show = tkinter.Text(self.unique_key_frame, wrap="word", height=2, yscrollcommand=self.unique_key_scroll.set)
             self.unique_key_show.pack(fill="both", expand=True)
+        elif cryp_type == 'decryp_text':
+            self.encrypt_frame = tkinter.Frame(self.root)
+            self.encrypt_frame.pack(fill="both", expand=True)
+
+            self.encrypt_text_scroll = tkinter.Scrollbar(self.encrypt_frame)
+            self.encrypt_text_scroll.pack(side="right", fill="y")
+
+            self.encrypt_text_show = tkinter.Text(self.encrypt_frame, wrap="word", height=5, yscrollcommand=self.encrypt_text_scroll.set)
+            self.encrypt_text_show.pack(fill="both", expand=True)
 
     def create_common_fields(self, cryp_type):
         if cryp_type == 'file' or cryp_type == 'text':
@@ -208,6 +224,7 @@ class MainPage(Page):
             self.insert_cpf.pack()
         elif cryp_type == 'decrypt':
             validate_input_len_cmd = self.root.register(self.validate_input_len)
+            self.count = 0
 
             self.cpf_label = tkinter.Label(self.root, text='Insira seu CPF (apenas números)')
             self.cpf_label.pack() 
@@ -215,9 +232,18 @@ class MainPage(Page):
             self.insert_cpf.pack()
             
             self.key_label = tkinter.Label(self.root, text='Insira a Key para descriptografia')
-            self.key_label.pack() 
+            self.key_label.pack()
             self.insert_key = tkinter.Entry(self.root, justify='center',width=100, validate="key")
             self.insert_key.pack()
+
+            decrypt_options = ['Descriptografar Texto','Descriptografar Arquivo']
+            self.selected_picklist_option = tkinter.StringVar(self.root)
+            self.picklist_selection = ''
+            
+            self.picklist_label = tkinter.Label(self.root, text='Selecione o que será descriptografado')
+            self.picklist_label.pack()
+            self.picklist = tkinter.OptionMenu(self.root, self.selected_picklist_option, *decrypt_options, command=self.check_picklist_selection)
+            self.picklist.pack()
 
     def generate_pdf_file(self, encrypted_text, key, user_name, cryp_type):
         pdf_files = func.pdf_files_controller(encrypted_text, key, user_name, cryp_type)
@@ -235,6 +261,50 @@ class MainPage(Page):
             
             self.count_search_file += 1
 
+    def check_decryp(self, cryp_type):
+        data_cpf = self.insert_cpf.get()
+        data_key = self.insert_key.get()
+        data_picklist = self.picklist_selection
+
+        self.count += 1
+
+        if self.count == 1:
+            self.create_common_widgets(cryp_type)
+
+        len_validation = func.verify_len_input_decryp(data_cpf, data_key, data_picklist)
+
+        if len_validation == 'valid':
+            cpf_validation = func.verify_cpf(data_cpf)
+
+            if cpf_validation == 'cpf valid':                
+                search_db_validation, search_db_return = func.search_on_db(data_key, data_cpf, data_picklist)
+
+                if search_db_validation == 'found':
+                    if data_picklist == 'text':
+                        self.create_common_widgets('decryp_text')
+
+                        name, decrypted_text = search_db_return
+                        
+                        self.encrypt_text_show.insert("1.0", decrypted_text)
+                        self.encrypt_text_show.config(state='disabled')
+                        
+                        self.encrypt_text_scroll.config(command=self.encrypt_text_show.yview)
+
+                        self.validation_label.config(text=f'{name}, aqui está seu texto descriptografado:')                      
+                    elif data_picklist == 'file':
+                        func.save_decrypted_file()
+                else:
+                    self.validation_label.config(text=search_db_return)
+            else:
+                self.validation_label.config(text=cpf_validation)
+        else:
+            self.validation_label.config(text=len_validation)
+
+    def check_picklist_selection(self, selection):
+        if selection == 'Descriptografar Texto':
+            self.picklist_selection = 'text'
+        elif selection == 'Descriptografar Arquivo':
+            self.picklist_selection = 'file'
 
 if __name__ == "__main__":
     main_page = MainPage('Cryptography App')
