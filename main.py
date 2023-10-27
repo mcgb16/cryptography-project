@@ -292,7 +292,11 @@ class MainPage(Page):
 
                         self.validation_label.config(text=f'{name}, aqui está seu texto descriptografado:')                      
                     elif data_picklist == 'file':
-                        func.save_decrypted_file()
+                        name, file_name, file_dir  = search_db_return
+
+                        func.save_decrypted_file(file_name, file_dir)
+
+                        self.validation_label.config(text=f'{name}, o arquivo descriptografado foi salvo no local selecionado.')   
                 else:
                     self.validation_label.config(text=search_db_return)
             else:
