@@ -238,5 +238,15 @@ def verify_len_input_decryp(cpf, key, picklist):
     else:
         return 'valid'
 
-def save_decrypted_file():
-    pass
+def save_decrypted_file(file_name, file_dir):
+    final_dir_name = filedialog.asksaveasfilename(filetypes=[("All Files", "*.*")],initialfile=file_name)
+    final_dir_list = final_dir_name.split("/")
+
+    final_dir = ''
+
+    for i in final_dir_list:
+        if i != final_dir_list[-1]:
+            final_dir += i + "\\"
+
+    shutil.move(file_dir, final_dir)
+    return
