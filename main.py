@@ -171,8 +171,9 @@ class MainPage(Page):
         self.label_var_per_digit.set(255 - len(self.current_text))
 
     def create_common_widgets(self, cryp_type):
-        self.validation_label = tkinter.Label(self.root, text='')
-        self.validation_label.pack()
+        if cryp_type != 'decryp_text':
+            self.validation_label = tkinter.Label(self.root, text='')
+            self.validation_label.pack()
 
         if cryp_type == 'text':
             self.encrypt_text_label = tkinter.Label(self.root, text='Texto criptografado:')
