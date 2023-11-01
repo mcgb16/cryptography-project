@@ -68,15 +68,6 @@ class MainPage(Page):
 
             decryp_button = tkinter.Button(buttons_frame_decryp_page, text='Descriptografar', command=lambda: self.check_decryp(cryp_type))
             decryp_button.pack(side='left')
-            
-            button_frame_bottom = tkinter.Frame(self.root)
-            button_frame_bottom.pack(side="bottom", fill="x")
-
-            return_button = tkinter.Button(button_frame_bottom, text="Página Inicial", command=lambda: self.open_next_page('Cryptography App'))
-            reset_button = tkinter.Button(button_frame_bottom, text="Reset", command=lambda: self.open_next_page('Descriptografia'))
-
-            return_button.pack(side="right")
-            reset_button.pack(side="right")
 
     def open_next_page(self,title):
         self.root.destroy()
@@ -232,6 +223,18 @@ class MainPage(Page):
             self.cpf_label.pack() 
             self.insert_cpf = tkinter.Entry(self.root, justify='center',width=50, validate="key", validatecommand=(validate_input_len_cmd, "%P", "cpf"))
             self.insert_cpf.pack()
+            
+            button_frame_bottom = tkinter.Frame(self.root)
+            button_frame_bottom.pack(side="bottom", fill="x")
+
+            return_button = tkinter.Button(button_frame_bottom, text="Página Inicial", command=lambda: self.open_next_page('Cryptography App'))
+            if cryp_type == 'file':
+                reset_button = tkinter.Button(button_frame_bottom, text="Reset", command=lambda: self.open_next_page('Criptografar Arquivos'))
+            elif cryp_type == 'text':
+                reset_button = tkinter.Button(button_frame_bottom, text="Reset", command=lambda: self.open_next_page('Criptografar Textos'))
+
+            return_button.pack(side="right")
+            reset_button.pack(side="right")            
         elif cryp_type == 'decrypt':
             validate_input_len_cmd = self.root.register(self.validate_input_len)
             self.count = 0
@@ -254,6 +257,15 @@ class MainPage(Page):
             self.picklist_label.pack()
             self.picklist = tkinter.OptionMenu(self.root, self.selected_picklist_option, *decrypt_options, command=self.check_picklist_selection)
             self.picklist.pack()
+
+            button_frame_bottom = tkinter.Frame(self.root)
+            button_frame_bottom.pack(side="bottom", fill="x")
+
+            return_button = tkinter.Button(button_frame_bottom, text="Página Inicial", command=lambda: self.open_next_page('Cryptography App'))
+            reset_button = tkinter.Button(button_frame_bottom, text="Reset", command=lambda: self.open_next_page('Descriptografia'))
+
+            return_button.pack(side="right")
+            reset_button.pack(side="right")
 
     def generate_pdf_file(self, encrypted_text, key, user_name, cryp_type):
         pdf_files = func.pdf_files_controller(encrypted_text, key, user_name, cryp_type)
