@@ -11,10 +11,12 @@ Em progresso...
 # Overview das Classes e Funções/Métodos
 
 ## main.py
-- Page
+- Page [Classe]
     - __init__(self, title)
+        - Método init padrão de classes, o qual foi utilizado para setar alguns valores que serão comuns entre todas as páginas a serem criadas.
     - show_pages(self)
-- MainPage(Page)
+        - Método vazio que será melhor desenvolvido nas classes que herdarem de Page.
+- MainPage(Page) [Classe]
     - show_pages(self)
     - open_next_page(self,title)
     - check_data(self, cryp_type)
@@ -29,9 +31,14 @@ Em progresso...
 
 ## func.py
 - verify_cpf(user_cpf)
+    - Função que irá receber o CPF digitado pelo usuário na tela e irá efetuar a validação se o CPF é válido ou não.
 - verify_len_input_cryp(cpf, name, text_to_encrypt)
+    - Função que verifica se todos os campos, nos layouts de criptografia (textos ou arquivos), foram preenchidos.
 - generate_encrypted_data(text_to_crypt)
+    - Função que executa a criptografia do que foi escrito pelo usuário, na criptografia de textos.
+    - Função que executa a criptografia do path do arquivo selecionado pelo usuário, a qual será inserida no conteúdo do arquivo.
 - generate_unique_key()
+    - Função que gera a key única para descriptografia.
 - generate_pdf_files(main_txt, pdf_type, user_name, file_name)
 - pdf_files_controller(encrypted_text, key, user_name, cryp_type, file_name='')
 - send_text_to_db(key, name, text, cpf)
