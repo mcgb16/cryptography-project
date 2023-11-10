@@ -34,7 +34,7 @@ class MainPage(Page):
             self.text_to_encrypt_label.pack()
             self.text_to_encrypt_label_var = tkinter.Label(self.root, textvariable=self.label_var_per_digit)
             self.text_to_encrypt_label_var.pack()
-            self.insert_text_to_encrypt=tkinter.Text(self.root,wrap='word',height=4)
+            self.insert_text_to_encrypt = tkinter.Text(self.root,wrap='word',height=4)
             self.insert_text_to_encrypt.pack()
             self.insert_text_to_encrypt.bind("<KeyRelease>",self.update_label_when_digit)
 
@@ -225,7 +225,7 @@ class MainPage(Page):
             self.insert_cpf.pack()
             
             button_frame_bottom = tkinter.Frame(self.root)
-            button_frame_bottom.pack(side="bottom", fill="x")
+            button_frame_bottom.pack(side="bottom", fill="x", pady=3)
 
             return_button = tkinter.Button(button_frame_bottom, text="Página Inicial", command=lambda: self.open_next_page('Cryptography App'))
             if cryp_type == 'file':
@@ -233,7 +233,7 @@ class MainPage(Page):
             elif cryp_type == 'text':
                 reset_button = tkinter.Button(button_frame_bottom, text="Reset", command=lambda: self.open_next_page('Criptografar Textos'))
 
-            return_button.pack(side="right")
+            return_button.pack(side="right", padx=3)
             reset_button.pack(side="right")            
         elif cryp_type == 'decrypt':
             validate_input_len_cmd = self.root.register(self.validate_input_len)
