@@ -203,7 +203,7 @@ def generate_encrypted_file(encrypted_data, file_name, file_dir):
         return success_msg
 
 def move_file_to_server(file_dir, file_name):   
-    server_dir = 'C:\\Users\\mathe\\Desktop\\sv'
+    server_dir = 'svdirhere'
     try:
         shutil.move(file_dir,server_dir)
         server_file_dir = server_dir + "\\" + file_name
