@@ -10,7 +10,7 @@ Em progresso...
 
 # Overview das Classes e Funções/Métodos
 
-## main.py
+### main.py
 - Page [Classe]
     - __init__(self, title)
         - Método init padrão de classes, o qual foi utilizado para setar alguns valores que serão comuns entre todas as páginas a serem criadas.
@@ -29,7 +29,7 @@ Em progresso...
     - check_decryp(self, cryp_type)
     - check_picklist_selection(self, selection)
 
-## func.py
+### func.py
 - verify_cpf(user_cpf)
     - Função que irá receber o CPF digitado pelo usuário na tela e irá efetuar a validação se o CPF é válido ou não.
 - verify_len_input_cryp(cpf, name, text_to_encrypt)
@@ -40,19 +40,40 @@ Em progresso...
 - generate_unique_key()
     - Função que gera a key única para descriptografia.
 - generate_pdf_files(main_txt, pdf_type, user_name, file_name)
+    - Função que cria (sendo possível escolher onde ele será salvo no sistema) e formata um PDF de acordo com a finalidade dele (para armazenar o texto criptografado, para armazenar a chave de descriptografia, para criptografar um arquivo PDF).
 - pdf_files_controller(encrypted_text, key, user_name, cryp_type, file_name='')
+    - Função que serve de controladora da função "generate_pdf_files". É nela que os valores enviados para a outra função são setados com mais precisão.
 - send_text_to_db(key, name, text, cpf)
+    - Função que aciona a função do arquivo "func_db", a qual é utilizada para salvar o texto descriptografado no banco de dados, o nome do usuário, o CPF e a chave de descriptografia.
 - search_file()
+    - Função que é utilizada para efetuar a busca por arquivos no sistema.
 - generate_encrypted_file(encrypted_data, file_name, file_dir)
+    - Função que efetua a criptografia do arquivo de acordo com sua extensão.
+    - As extensões permitidas são: docx, xlsx, pdf, md, txt.
 - move_file_to_server(file_dir, file_name)
+    - Função que move o arquivo original de seu diretório para o diretório do servidor, o qual servirá para armazenas os arquivos originais para serem buscados depois.
 - send_file_to_db(key, name, cpf, file_name, file_dir)
+    - Função que aciona a função do arquivo "func_db", a qual é utilizada para salvar o diretório do arquivo descriptografado no banco de dados, o nome do arquivo, o nome do usuário, o CPF e a chave de descriptografia.
 - search_on_db(key, cpf, decryp_type)
+    - Função que aciona as funções do arquivo "func_db", as quais efetuam a busca no banco de dados pelos textos ou arquivos descriptografados.
+    - O parâmetro "decryp_type" é utilizado para que o sistema saiba se ele precisa efetuar a busca na tabela de textos ou na tabela de arquivos.
 - verify_len_input_decryp(cpf, key, picklist)
+    - Função que verifica se todos os campos, no layout de descriptografia, foram preenchidos.
 - save_decrypted_file(file_name, file_dir)
+    - Função que seleciona onde será salvo o arquivo descriptografado no sistema (após ser buscado no banco de dados/servidor).
 
-## func_db.py
+### func_db.py
 - save_text_on_db(key, name, text, cpf)
+    - Função que efetua o salvamento do texto descriptografado no banco de dados.
+    - Todos os parâmetros são referentes às colunas da tabela, sendo a "Key" a primary key.
 - save_file_on_db(key, name, cpf, file_name, file_dir)
+    - Função que efetua o salvamento do diretório do arquivo descriptografado, no servidor, no banco de dados.
+    - Todos os parâmetros são referentes às colunas da tabela, sendo a "Key" a primary key.
 - search_text_on_db(key, cpf)
+    - Função que efetua a busca pela tabela de textos descriptografados a partir da Key juntamente com o CPF.
+    - OBS: Ambos precisam estar condizentes para ser encontrado o resultado.
 - search_file_on_db(key, cpf)
+    - Função que efetua a busca pela tabela de arquivos descriptografados a partir da Key juntamente com o CPF.
+    - OBS: Ambos precisam estar condizentes para ser encontrado o resultado.
 - deactivate_db_connection()
+    - Função utilizada para finalizar a conexão com o banco de dados.
