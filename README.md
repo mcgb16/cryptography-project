@@ -14,7 +14,9 @@
 
 # Funcionalidades
 
-**OBSERVAÇÃO: Não levar em consideração o design do layout, o intuito do projeto não é se preocupar com o design.**
+- **OBSERVAÇÃO: Não levar em consideração o design do layout, o intuito do projeto não é se preocupar com o design.**
+- **OBSERVAÇÃO 2: Nem todas as funcionalidades estão printadas, principalmente as de salvamento/busca de arquivos na máquina, pois não me sinto confortável mostrando os diretórios em minha máquina.**
+
 
 ### Criptografia de Textos
 1. Na primeira tela, selecionar a opção "Criptografar Textos".
@@ -41,25 +43,52 @@
 
 ### Criptografia de Arquivos
 1. Na primeira tela, selecionar a opção "Criptografar Arquivos".
+![Alt text](/Imagens%20Funcionalidades/image-8.png)
 2. Preencher todos os campos de Nome, CPF. Lembrando que temos as seguintes validações:
     1. Todos os campos precisam estar preenchidos.
     2. O CPF precisa ser válido.
+![Alt text](/Imagens%20Funcionalidades/image-9.png)
 3. Selecionar o arquivo a ser criptografado.
-4. Ao clicar em criptografar, você notará que seu arquivo escolhido vai ser modificado por um arquivo de mesmo nome, mesma extensão, mas totalmente criptografado.
+![Alt text](/Imagens%20Funcionalidades/image-10.png)
+4. Ao clicar em criptografar, você notará que seu arquivo escolhido vai ser modificado por um arquivo de mesmo nome, mesma extensão, mas totalmente criptografado. E também surgirá uma tela do sistema onde você escolherá onde salvar o arquivo PDF contendo a key de descriptografia.
+    1. Antes:
+![Alt text](/Imagens%20Funcionalidades/image-11.png)
+    2. Depois:
+![Alt text](/Imagens%20Funcionalidades/image-12.png)
 5. Caso queira resetar a tela, clique em Reset no canto inferior direito.
+    1. Antes:
+![Alt text](/Imagens%20Funcionalidades/image-13.png)
+    2. Depois:
+![Alt text](/Imagens%20Funcionalidades/image-15.png)
 6. Caso queira voltar a tela inicial, clique em Página Inicial no canto inferior direito.
+    1. Antes:
+![Alt text](/Imagens%20Funcionalidades/image-14.png)
+    2. Depois:
+![Alt text](/Imagens%20Funcionalidades/image-16.png)
 
 ### Descriptografia
 1. Na primeira tela, selecionar a opção "Descriptografia".
+![Alt text](/Imagens%20Funcionalidades/image-17.png)
 2. Preencher todos os campos de CPF e Key de Descriptografia. Lembrando que temos as seguintes validações:
     1. Todos os campos precisam estar preenchidos.
     2. O CPF precisa ser válido.
+![Alt text](/Imagens%20Funcionalidades/image-18.png)
 3. Selecionar o tipo de descriptografia a ser feita (arquivos ou textos).
+![Alt text](/Imagens%20Funcionalidades/image-19.png)
 4. Ao clicar em descriptografar, teremos dois comportamentos:
     1. Caso a descriptografia seja de textos, abrirá um componente em tela o qual receberá o texto descriptografado que havia sido digitado pelo usuário no primeiro fluxo.
+![Alt text](/Imagens%20Funcionalidades/image-20.png)
     2. Caso a descriptografia seja de arquivos, abrirá uma tela do próprio sistema pedindo ao usuário para selecionar um local para salvar o arquivo descriptografado que havia sido escolhido pelo usuário no segundo fluxo.
 5. Caso queira resetar a tela, clique em Reset no canto inferior direito.
+    1. Antes:
+![Alt text](/Imagens%20Funcionalidades/image-21.png)
+    2. Depois:
+![Alt text](/Imagens%20Funcionalidades/image-23.png)
 6. Caso queira voltar a tela inicial, clique em Página Inicial no canto inferior direito.
+    1. Antes:
+![Alt text](/Imagens%20Funcionalidades/image-22.png)
+    2. Depois:
+![Alt text](/Imagens%20Funcionalidades/image-24.png)
 
 # Overview das Classes e Funções/Métodos
 
