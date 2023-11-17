@@ -18,14 +18,26 @@
 
 ### Criptografia de Textos
 1. Na primeira tela, selecionar a opção "Criptografar Textos".
+![Alt text](/Imagens%20Funcionalidades/image.png)
 2. Preencher todos os campos de Nome, CPF e Texto para Criptografar. Lembrando que temos as seguintes validações:
     1. Todos os campos precisam estar preenchidos.
     2. O CPF precisa ser válido.
     3. O texto precisa ter 255 caracteres ou menos.
+![Alt text](/Imagens%20Funcionalidades/image-1.png)
 3. Ao clicar em criptografar, irá abrir os dois componentes de Texto Criptografado e Key para Descriptografia.
+![Alt text](/Imagens%20Funcionalidades/image-2.png)
 4. Caso opte, é possível gerar dois arquivos PDF, com um contendo o texto criptografado e o outro a key.
+![Alt text](/Imagens%20Funcionalidades/image-3.png)
 5. Caso queira resetar a tela, clique em Reset no canto inferior direito.
+    1. Antes:
+    ![Alt text](/Imagens%20Funcionalidades/image-4.png)
+    2. Depois:
+    ![Alt text](/Imagens%20Funcionalidades/image-5.png)
 6. Caso queira voltar a tela inicial, clique em Página Inicial no canto inferior direito.
+    1. Antes:
+    ![Alt text](/Imagens%20Funcionalidades/image-6.png)
+    2. Depois:
+    ![Alt text](/Imagens%20Funcionalidades/image-7.png)
 
 ### Criptografia de Arquivos
 1. Na primeira tela, selecionar a opção "Criptografar Arquivos".
