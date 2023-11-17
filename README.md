@@ -2,7 +2,15 @@
 
 - Linguagem de programação: Python
 - Banco de Dados: MySQL
-- Biblioteca para GUI: TKinter
+- Biblioteca para GUI: Tkinter
+- Biblioteca para mover arquivos no sistema: Shutil
+- Biblioteca para PDF: Fpdf
+- Biblioteca para Docx: Docx
+- Biblioteca para Xlsx: Openpyxl
+- Biblioteca para escolher onde salvar arquivos: Filedialog (Tkinter)
+- Biblioteca para randomizar caracteres/números: Random
+- Biblioteca para randomizar caracteres/números SEMPRE diferentes: Secrets
+- Biblioteca de caracteres: String
 
 # Funcionalidades
 
