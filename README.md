@@ -30,14 +30,14 @@
 ![Alt text](/Imagens%20Funcionalidades/image-3.png)
 5. Caso queira resetar a tela, clique em Reset no canto inferior direito.
     1. Antes:
-    ![Alt text](/Imagens%20Funcionalidades/image-4.png)
+![Alt text](/Imagens%20Funcionalidades/image-4.png)
     2. Depois:
-    ![Alt text](/Imagens%20Funcionalidades/image-5.png)
+![Alt text](/Imagens%20Funcionalidades/image-5.png)
 6. Caso queira voltar a tela inicial, clique em Página Inicial no canto inferior direito.
     1. Antes:
-    ![Alt text](/Imagens%20Funcionalidades/image-6.png)
+![Alt text](/Imagens%20Funcionalidades/image-6.png)
     2. Depois:
-    ![Alt text](/Imagens%20Funcionalidades/image-7.png)
+![Alt text](/Imagens%20Funcionalidades/image-7.png)
 
 ### Criptografia de Arquivos
 1. Na primeira tela, selecionar a opção "Criptografar Arquivos".
