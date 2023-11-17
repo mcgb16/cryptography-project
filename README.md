@@ -18,16 +18,31 @@ Em progresso...
         - Método vazio que será melhor desenvolvido nas classes que herdarem de Page.
 - MainPage(Page) [Classe]
     - show_pages(self)
+        - Método responsável por abrir as 4 páginas disponíveis no aplicativo (inicial, criptografia de textos, criptografia de arquivos e descriptografia.).
+        - A partir deste método outros serão chamados de acordo com os cliques dos botões e alguns até mesmo automaticamente após abrir a página.
     - open_next_page(self,title)
+        - Método responsável por abrir uma das páginas do método anterior, se baseando em seu parâmetro "title".
     - check_data(self, cryp_type)
+        - Método que chama todas as funções necessárias, automaticamente, no processo de criptografia.
+        - Principal método utilizado na página de criptografia, pois todo o fluxo acaba passando por ele.
     - validate_input_len(self, P, input_type)
+        - Método que verifica o comprimento dos dois campos de Nome e CPF das páginas que os possuem.
+        - Ele verifica em tempo real o comprimento desses campos conforme o usuário digita, para que não seja possível inserir mais caracteres do que é aceito.
     - update_label_when_digit(self, event)
+        - Método que modifica a label de contagem de caracteres do campo de inserir texto a ser criptografado.
     - create_common_widgets(self, cryp_type)
+        - Método que cria widgets/campos padrão para as páginas, assim o código pode ser reutilizado quando preciso.
     - create_common_fields(self, cryp_type)
+        - Método que cria campos/widgets padrão para as páginas, assim o código pode ser reutilizado quando preciso.
     - generate_pdf_file(self, encrypted_text, key, user_name, cryp_type)
+        - Método que chama as funções do arquivo "func.py" referentes a criação dos arquivos PDF.
     - search_file(self)
+        - Método que chama a função "search_file()" do arquivo "func.py".
     - check_decryp(self, cryp_type)
+        - Método que chama todas as funções necessárias, automaticamente, no processo de descriptografia.
+        - Principal método utilizado na página de descriptografia, pois todo o fluxo acaba passando por ele.
     - check_picklist_selection(self, selection)
+        - Método que verifica qual opção foi escolhida na lista de valores da página de descriptografia.
 
 ### func.py
 - verify_cpf(user_cpf)
