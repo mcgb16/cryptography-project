@@ -6,7 +6,22 @@
 
 # Funcionalidades
 
-Em progresso...
+**OBSERVAÇÃO: Não levar em consideração o design do layout, o intuito do projeto não era se preocupar com o design.**
+
+### Criptografia de Textos
+1. Na primeira tela, selecionar a opção "Criptografar Textos".
+2. Preencher todos os campos de Nome, CPF e Texto para Criptografar. Lembrando que temos as seguintes validações:
+    1. Todos os campos precisam estar preenchidos.
+    2. O CPF precisa ser válido.
+    3. O texto precisa ter 255 caracteres ou menos.
+3. Ao clicar em criptografar, irá abrir os dois componentes de Texto Criptografado e Key para Descriptografia.
+4. Caso opte, é possível gerar dois arquivos PDF, com um contendo o texto criptografado e o outro a key.
+5. Caso queira resetar a tela, clique em Reset no canto inferior direito.
+6. Caso queira voltar a tela inicial, clique em Página Inicial no canto inferior direito.
+
+### Criptografia de Arquivos
+
+### Descriptografia
 
 # Overview das Classes e Funções/Métodos
 
