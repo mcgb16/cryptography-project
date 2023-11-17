@@ -6,7 +6,7 @@
 
 # Funcionalidades
 
-**OBSERVAÇÃO: Não levar em consideração o design do layout, o intuito do projeto não era se preocupar com o design.**
+**OBSERVAÇÃO: Não levar em consideração o design do layout, o intuito do projeto não é se preocupar com o design.**
 
 ### Criptografia de Textos
 1. Na primeira tela, selecionar a opção "Criptografar Textos".
@@ -20,8 +20,26 @@
 6. Caso queira voltar a tela inicial, clique em Página Inicial no canto inferior direito.
 
 ### Criptografia de Arquivos
+1. Na primeira tela, selecionar a opção "Criptografar Arquivos".
+2. Preencher todos os campos de Nome, CPF. Lembrando que temos as seguintes validações:
+    1. Todos os campos precisam estar preenchidos.
+    2. O CPF precisa ser válido.
+3. Selecionar o arquivo a ser criptografado.
+4. Ao clicar em criptografar, você notará que seu arquivo escolhido vai ser modificado por um arquivo de mesmo nome, mesma extensão, mas totalmente criptografado.
+5. Caso queira resetar a tela, clique em Reset no canto inferior direito.
+6. Caso queira voltar a tela inicial, clique em Página Inicial no canto inferior direito.
 
 ### Descriptografia
+1. Na primeira tela, selecionar a opção "Descriptografia".
+2. Preencher todos os campos de CPF e Key de Descriptografia. Lembrando que temos as seguintes validações:
+    1. Todos os campos precisam estar preenchidos.
+    2. O CPF precisa ser válido.
+3. Selecionar o tipo de descriptografia a ser feita (arquivos ou textos).
+4. Ao clicar em descriptografar, teremos dois comportamentos:
+    1. Caso a descriptografia seja de textos, abrirá um componente em tela o qual receberá o texto descriptografado que havia sido digitado pelo usuário no primeiro fluxo.
+    2. Caso a descriptografia seja de arquivos, abrirá uma tela do próprio sistema pedindo ao usuário para selecionar um local para salvar o arquivo descriptografado que havia sido escolhido pelo usuário no segundo fluxo.
+5. Caso queira resetar a tela, clique em Reset no canto inferior direito.
+6. Caso queira voltar a tela inicial, clique em Página Inicial no canto inferior direito.
 
 # Overview das Classes e Funções/Métodos
 
