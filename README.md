@@ -15,7 +15,7 @@
 # Funcionalidades
 
 - **OBSERVAÇÃO: Não levar em consideração o design do layout, o intuito do projeto não é se preocupar com o design.**
-- **OBSERVAÇÃO 2: Nem todas as funcionalidades estão printadas, principalmente as de salvamento/busca de arquivos na máquina, pois não me sinto confortável mostrando os diretórios em minha máquina.**
+- **OBSERVAÇÃO 2: Nem todas as funcionalidades estão printadas, pois não printei as de salvamento/busca de arquivos na máquina por motivos de privacidade.**
 
 
 ### Criptografia de Textos
